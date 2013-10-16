@@ -11,4 +11,8 @@ package lurajcevi_zadaca_1;
 public abstract class FileSystem {
     public static StringBuffer g_indent = new StringBuffer();
     public static int componentId = 0;
+    
+    
+    public abstract void getFolder(int folderId);
+    public abstract void addFile(int folderId, String filename);
 }

@@ -25,8 +25,12 @@ public class Lurajcevi_zadaca_1 {
         FileSystemFactory factory = 
                 FileSystemFactory.getFactory(System.getenv("DS_TIP"));
 
-        FileSystem fs = factory.getFileSystem("/home/luka/documents/faks/test/");        
-        
+        FileSystem fs = factory.getFileSystem("/home/luka/documents/faks/test/");  
+        System.out.println("###############################");
+        //fs.getFolder(0);
+        //fs.getsFolder(1);
+        fs.addFile(1, "nano.sml");
+        //fs.addFile(3, "nano.sml");
         //fs.listDirectory();
     }
 

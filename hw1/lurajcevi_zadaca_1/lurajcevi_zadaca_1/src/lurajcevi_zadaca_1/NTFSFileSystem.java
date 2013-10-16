@@ -22,7 +22,7 @@ public class NTFSFileSystem extends FileSystem {
         dir = new File(path);
         rootDir = new Directory(dir.getName());
         populateDirectory(path, rootDir);
-        rootDir.ls();
+        //rootDir.ls();
     }
     
     private void populateDirectory(String path, Directory parent) {
@@ -38,7 +38,21 @@ public class NTFSFileSystem extends FileSystem {
                 parent.add(file);
             }
         }
-        
     }
+    
+    @Override
+    public void getFolder(int folderId) {
+        rootDir.printDir(folderId);
+    }
+
+    @Override
+    public void addFile(int folderId, String filename) {
+        Directory d = rootDir.getDir(folderId);
+        d.add(new FileX(filename));
+        rootDir.ls();
+    }
+    
+    
+    
    
 }
