@@ -23,7 +23,6 @@ public abstract class FileSystemFactory {
                             INSTANCE = new NTFSFactory();
                             break;
                         case "1":
-                            //INSTANCE = new FatFactory();
                             break;
                         default:
 

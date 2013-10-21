@@ -11,5 +11,10 @@ package lurajcevi_zadaca_1.composite;
 public interface AbstractFile {
     
     public void ls();
+    public int getType();
+    public int getId();
+    public int getParentId();
+    public String getName();
+    public String getPath();
     
 }

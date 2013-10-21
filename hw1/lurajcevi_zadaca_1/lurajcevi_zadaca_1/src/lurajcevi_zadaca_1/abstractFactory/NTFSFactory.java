@@ -15,8 +15,6 @@ public class NTFSFactory extends FileSystemFactory {
     
     @Override
     public FileSystem getFileSystem(String path) {
-        // TODO: give path as argument
-        // TODO: do stuff on NTFSFileSystem class (load data, parse, sort...)
         return new NTFSFileSystem(path);
     }
 

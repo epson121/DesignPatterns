@@ -13,6 +13,13 @@ public abstract class FileSystem {
     public static int componentId = 0;
     
     
-    public abstract void getFolder(int folderId);
+    
     public abstract void addFile(int folderId, String filename);
+    public abstract void remove(int fileId);
+    public abstract void move(int fileId, int folderId, String name);
+    public abstract void copy(int fileId, int folderId, String name);
+    
+    public abstract void listFrom(int id);
+    public abstract void listParents(int id);
+    public abstract void listFolder(int folderId);
 }
