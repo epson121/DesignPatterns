@@ -18,6 +18,7 @@ public class Directory implements AbstractFile {
     private int parent_id;
     private ArrayList m_fs = new ArrayList();
     private String path;
+    private long size;
     
     public Directory(String name, int parentId, String path) {
         this.m_name = name;
@@ -33,8 +34,9 @@ public class Directory implements AbstractFile {
 
     @Override
     public void ls() {
-        String id = "" + m_id;
-        System.out.println(FileSystem.g_indent + id + ": " + m_name);
+        String id = "" + this.m_id;
+        String sizeAndElements = "  " + this.size + " #el: " + this.m_fs.size();
+        System.out.println(FileSystem.g_indent + id + ":" + m_name + sizeAndElements);
         //System.out.println(this.getPath());
         FileSystem.g_indent.append("   ");
         for (int i = 0; i < m_fs.size(); i++) {
@@ -46,6 +48,8 @@ public class Directory implements AbstractFile {
     
     
     public AbstractFile getItem(int id) {
+        if (id == 0)
+            return this;
         for (int i = 0; i < this.m_fs.size(); i++) {
             AbstractFile obj = (AbstractFile) m_fs.get(i);
             //System.out.println("This name: " + obj.getName());
@@ -110,5 +114,31 @@ public class Directory implements AbstractFile {
     public String getPath() {
         return this.path;
     }
+
+    @Override
+    public long getSize() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList<Object> getChildren() {
+        return m_fs;
+    }
+
+    public void setM_name(String m_name) {
+        this.m_name = m_name;
+    }
+    
+        @Override
+    public void setName(String name) {
+        this.m_name = name;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.m_id = id;
+    }
+    
+    
     
 }

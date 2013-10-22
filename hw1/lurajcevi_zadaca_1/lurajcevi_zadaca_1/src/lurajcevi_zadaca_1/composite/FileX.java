@@ -4,6 +4,7 @@
  */
 package lurajcevi_zadaca_1.composite;
 
+import java.util.ArrayList;
 import lurajcevi_zadaca_1.FileSystem;
 
 /**
@@ -16,19 +17,22 @@ public class FileX implements AbstractFile {
     private int m_id;
     private int parent_id;
     private String path;
+    private long size;
     
-    public FileX(String name, int parentId, String path) {
+    public FileX(String name, int parentId, String path, long size) {
         this.m_name = name;
         this.m_id = FileSystem.componentId;
         this.parent_id = parentId;
         this.path = path;
+        this.size = size;
         FileSystem.componentId += 1;
     }
     
     @Override
     public void ls() {
-        String id = "" + m_id;
-        System.out.println(FileSystem.g_indent + id + ": " + m_name);
+        String id = "" + this.m_id;
+        String size = "  " + this.size;
+        System.out.println(FileSystem.g_indent + id + ":" + m_name + size);
         //System.out.println(this.getPath());
     }
 
@@ -55,6 +59,26 @@ public class FileX implements AbstractFile {
     @Override
     public String getPath() {
         return this.path;
+    }
+
+    @Override
+    public long getSize() {
+        return this.size;
+    }
+
+    @Override
+    public ArrayList<Object> getChildren() {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public void setName(String name) {
+        this.m_name = name;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.m_id = id;
     }
     
 }

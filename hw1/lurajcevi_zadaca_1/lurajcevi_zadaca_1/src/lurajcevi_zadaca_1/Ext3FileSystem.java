@@ -1,27 +1,27 @@
-
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package lurajcevi_zadaca_1;
 
 /**
  *
  * @author luka
  */
-public class NTFSFileSystem extends FileSystem {    
-    
+public class Ext3FileSystem extends FileSystem {
+
     private int MAX_FILENAME_LENGTH = 255;
-    private String[] DISALLOWED_CHARACTERS = {"?",  "\"",  "/",  "\\",
-                                              "<",  ">",  "*", "|", ":" };
-    private String[] DISALLOWED_FILENAMES = {"CON", "AUX", "COM1", "COM2", "COM3",
-                                           "COM4", "LPT1", "LPT2", "LPT3", "PRN",
-                                           "NUL"};
-    
+    private String[] DISALLOWED_CHARACTERS = {"/", ";"};
+    private String[] DISALLOWED_FILENAMES = {"/", "."};
+
     /**
      *
      * @param path
      */
-    public NTFSFileSystem(String path) {
+    public Ext3FileSystem(String path) {
         super(path);
     }
- 
+
     @Override
     public void addFile(int folderId, String filename) {
         if (checkConstraints(filename)) {
@@ -38,13 +38,13 @@ public class NTFSFileSystem extends FileSystem {
         } else {
             System.out.println("Bad filename.");
         }
-    } 
-    
+    }
+
     @Override
     public void copy(int fileId, int folderId, String name) {
-       if (checkConstraints(name)) {
-           super.copy(fileId, folderId, name);
-       } else {
+        if (checkConstraints(name)) {
+            super.copy(fileId, folderId, name);
+        } else {
             System.out.println("Bad filename.");
         }
     }
@@ -54,15 +54,15 @@ public class NTFSFileSystem extends FileSystem {
                 && checkAllowedCharacters(name)
                 && checkAllowedFilenames(name);
     }
-    
-    private boolean checkAllowedLength(String name) {
+
+    public boolean checkAllowedLength(String name) {
         if (name.length() > MAX_FILENAME_LENGTH) {
             return false;
         }
         return true;
     }
 
-    private boolean checkAllowedCharacters(String name) {
+    public boolean checkAllowedCharacters(String name) {
         for (String s : DISALLOWED_CHARACTERS) {
             if (name.contains(s)) {
                 return false;
@@ -79,6 +79,4 @@ public class NTFSFileSystem extends FileSystem {
         }
         return true;
     }
-
-    
 }
