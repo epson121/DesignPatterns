@@ -10,7 +10,7 @@ import lurajcevi_zadaca_1.FileSystem;
 public abstract class FileSystemFactory {
     
     private static volatile FileSystemFactory INSTANCE;
-    
+       
     // SINGLETON + ABSTRACT FACTORY
     public static FileSystemFactory getFactory(String env) {
         if (INSTANCE == null) {

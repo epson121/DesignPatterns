@@ -1,12 +1,15 @@
 package lurajcevi_zadaca_1;
 
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import lurajcevi_zadaca_1.composite.AbstractFile;
 import lurajcevi_zadaca_1.composite.Directory;
 import lurajcevi_zadaca_1.composite.FileX;
@@ -25,7 +28,10 @@ public abstract class FileSystem {
 
     public FileSystem(String rootPath) {
         dir = new File(rootPath);
-        rootDir = new Directory(dir.getName(), 0, dir.getAbsolutePath());
+        rootDir = new Directory(dir.getName(), 
+                                0, 
+                                dir.getAbsolutePath(), 
+                                getPermissions(dir));
         populateDirectory(rootPath, rootDir, 0);
     }
 
@@ -34,11 +40,18 @@ public abstract class FileSystem {
         dirContent = dir.listFiles();
         for (File f : dirContent) {
             if (f.isDirectory()) {
-                Directory newParent = new Directory(f.getName(), parentId, f.getAbsolutePath());
+                Directory newParent = new Directory(f.getName(), 
+                                                    parentId, 
+                                                    f.getAbsolutePath(),
+                                                    getPermissions(f));
                 parent.add(newParent);
                 populateDirectory(f.getAbsolutePath(), newParent, newParent.getId());
             } else {
-                FileX file = new FileX(f.getName(), parentId, f.getAbsolutePath(), f.length());
+                FileX file = new FileX(f.getName(), 
+                                       parentId, 
+                                       f.getAbsolutePath(), 
+                                       f.length(),
+                                       getPermissions(f));
                 parent.add(file);
             }
         }
@@ -50,7 +63,7 @@ public abstract class FileSystem {
             Directory directory = (Directory) d;
             directory.add(new FileX(filename,
                     directory.getId(),
-                    d.getPath() + File.separator + filename, 0));
+                    d.getPath() + File.separator + filename, 0, "rwx"));
         } else {
             System.out.println("Non existing directory.");
         }
@@ -62,7 +75,7 @@ public abstract class FileSystem {
             Directory directory = (Directory) d;
             directory.add(new Directory(foldername,
                     d.getId(),
-                    d.getPath() + File.separator + foldername));
+                    d.getPath() + File.separator + foldername, "rwx"));
         } else {
             System.out.println("Non existing directory.");
         }
@@ -74,8 +87,6 @@ public abstract class FileSystem {
             System.out.println("No such file or folder.");
             return;
         }
-        //System.out.println("OATH: " + itemToDelete.getPath());
-
         File fToDelete = new File(itemToDelete.getPath());
         if (fToDelete.isFile()) {
             System.out.println("TRUE");
@@ -93,69 +104,34 @@ public abstract class FileSystem {
         }
         for (int i = 0; i < files.length; i++) {
             if (files[i].isDirectory()) {
-                //System.out.println("REMOVING: " + files[i].getAbsolutePath() );
                 deleteRecursively(files[i].listFiles());
                 files[i].delete();
             } else {
-                //System.out.println("REMOVING: " + files[i].getAbsolutePath());
                 files[i].delete();
             }
         }
     }
     
-    public void moveRecursively(File[] f, String path) {
+    private void moveRecursively(File[] f, String path) {
         for (File file : f) {
             if (file.isDirectory()) {
-                File dir = new File(path + File.separator + file.getName());
-                dir.mkdirs();
-                moveRecursively(file.listFiles(), dir.getAbsolutePath());
+                File d = new File(path + File.separator + file.getName());
+                d.mkdirs();
+                moveRecursively(file.listFiles(), d.getAbsolutePath());
             } else {
                 file.renameTo(new File(path + File.separator + file.getName()));
             }
         }
     }
     
-    public void moveFolder(int f1Id, int f2Id) {
-        Directory newDir;
-        AbstractFile itemToMove = rootDir.getItem(f1Id);
-        
-        if (itemToMove == null) {
-            System.out.println("No such file or folder.");
-            return;
-        }
-        //System.out.println("OATH: " + itemToDelete.getPath());
-        File fToMove = new File(itemToMove.getPath());
-        
-        Directory parent = (Directory) rootDir.getItem(itemToMove.getParentId());
-        /*System.out.println("PARENT1: " + parent);
-        System.out.println("PARENT ID: " + parent.getId());*/
-        if (f2Id == 0) {
-            newDir = rootDir;
+    private ArrayList<Integer> getParentIds(int id, ArrayList<Integer> ids) {
+        if (id == 0) {
+            return ids;
         } else {
-            newDir = (Directory) rootDir.getItem(f2Id);
+            int temp = rootDir.getItem(id).getParentId();
+            ids.add(id);
+            return getParentIds(temp, ids);
         }
-        String newPath = newDir.getPath() + File.separator + itemToMove.getName();
-        /*Directory newest = new Directory(name, newDir.getId(), newPath);
-        
-        for (Object o : itemToMove.getChildren()) {
-            newest.add(o);
-        }*/
-        newDir.add(itemToMove);
-        /*System.out.println("TO MOVE: " + itemToMove);
-        System.out.println("TO MOVE ID: " + itemToMove.getId());
-        System.out.println("PARENT: " + parent);
-        System.out.println("PARENT ID: " + parent.getId());*/
-        /*ArrayList ch = parent.getChildren();
-        for (int i = 0; i < ch.size(); i++) {
-            if (ch.get(i) == itemToMove) {
-                parent.getChildren().remove(0);
-            }
-        }*/
-        parent.getChildren().remove(itemToMove);
-        moveRecursively(fToMove.listFiles(), newPath);
-        //fToMove.renameTo(new File(newPath));
-        deleteRecursively(fToMove.listFiles());
-        fToMove.delete();
     }
     
     public void moveFile(int fileId, int folderId, String name) {
@@ -165,33 +141,101 @@ public abstract class FileSystem {
             System.out.println("No such file or folder.");
             return;
         }
-        //System.out.println("OATH: " + itemToDelete.getPath());
 
         File fToMove = new File(itemToMove.getPath());
         Directory parent = (Directory) rootDir.getItem(itemToMove.getParentId());
-        parent.remove(itemToMove.getId());
+        
         if (folderId == 0) {
             newDir = rootDir;
         } else {
             newDir = (Directory) rootDir.getItem(folderId);
         }
-        String newPath = newDir.getPath() + File.separator + name;
-        newDir.add(new FileX(name,
-                newDir.getId(),
-                newPath, fToMove.length()));
-        fToMove.renameTo(new File(newPath));
+        System.out.println("ND: " + newDir);
+        System.out.println("ND: " + newDir.getName());
+        ArrayList<Integer> a = getParentIds(newDir.getId(), new ArrayList<Integer>());
+        for (int i : a) {
+            if (i == itemToMove.getId()) {
+                System.out.println("Can not move to child folder.");
+                return;
+            }
+        }
+        parent.remove(itemToMove.getId());
+        name = ("".equals(name)) ? fToMove.getName() : name;
+        System.out.println("NAME: " + name);
+        if (checkDuplicateNames(newDir.getChildren(), name)) {
+                System.out.println("SAME.");
+                name = generateUUID() + name;
+        }
+        System.out.println("Not same.");
+        String newPath;
+        if (itemToMove.getType() == 0) {
+            newPath = newDir.getPath() + File.separator + name + File.separator;
+            System.out.println("New path: " + newPath);
+            newDir.add(itemToMove);
+            parent.getChildren().remove(itemToMove);
+            File newF = new File(newPath);
+            newF.mkdir();
+            moveRecursively(fToMove.listFiles(), newPath);
+            deleteRecursively(fToMove.listFiles());
+            fToMove.delete();
+        } else {
+            newPath = newDir.getPath() + File.separator + name;
+            itemToMove.setName(name);
+            newDir.add(itemToMove);
+            parent.getChildren().remove(itemToMove);
+            fToMove.renameTo(new File(newPath));
+        }
     }
+    
+    private boolean checkDuplicateNames(ArrayList<Object> list, String name) {
+        for (Object o : list) {
+            AbstractFile af = (AbstractFile) o;
+            if (af.getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private Directory duplicateItem(Directory src, Directory dest) {
+        for (Object o : src.getChildren()) {
+            AbstractFile af = (AbstractFile) o;
+            if (af.getType() == 0) {
+                Directory n = new Directory(af.getName(), 
+                                            dest.getParentId(), 
+                                            dest.getPath(), 
+                                            dest.getPermissions());
+                n.add(duplicateItem((Directory) af, n));
+                dest.add(n);
+            } else {
+                dest.add(o);
+            }
+        }
+        return dest;
+    }
+    
 
     public void copy(int fileId, int folderId, String name) {
         AbstractFile file = rootDir.getItem(fileId);
         File fToCopy = new File(file.getPath());
         Directory newDir = (Directory) rootDir.getItem(folderId);
         String oldPath = file.getPath();
-        String newPath = newDir.getPath() + File.separator + name;
-        newDir.add(new FileX(name,
-                newDir.getId(),
-                newPath, fToCopy.length()));
-        copyFiles(oldPath, newPath);
+        name = ("".equals(name)) ? fToCopy.getName() : name;
+        if (file.getType() == 0) {
+            Directory d = new Directory(file.getName(), 
+                                        newDir.getParentId(), 
+                                        newDir.getPath(), 
+                                        file.getPermissions());
+            d = duplicateItem((Directory) file, d);
+            newDir.add(d);
+        } else {
+            String newPath = newDir.getPath() + File.separator + name;
+            newDir.add(new FileX(name,
+                       newDir.getId(),
+                       newPath, fToCopy.length(), 
+                       file.getPermissions()));
+            copyFiles(oldPath, newPath);
+        }
     }
 
     private void copyFiles(String path1, String path2) {
@@ -202,7 +246,7 @@ public abstract class FileSystem {
 
             File afile = new File(path1);
             File bfile = new File(path2);
-
+            
             inStream = new FileInputStream(afile);
             outStream = new FileOutputStream(bfile);
 
@@ -224,20 +268,11 @@ public abstract class FileSystem {
         }
     }
 
-    public void listFrom(int id) {
-        if (id == 0) {
-            listFolder(0);
-        } else {
-            //nothing
-            //slat parenta u funkciju i svaki koji ima parent taj printaj ga
-            // ili manji id
-        }
-    }
 
     public void listParents(int id) {
         listParentsHelper(id, new ArrayList<String>());
     }
-
+    
     public void listFolder(int id) {
         if (id == 0) {
             rootDir.ls();
@@ -247,6 +282,19 @@ public abstract class FileSystem {
                 System.out.println("No such item.");
             } else {
                 af.ls();
+            }
+        }
+    }
+    
+    public void listItem(int id) {
+        if (id == 0) {
+            rootDir.lsItem();
+        } else {
+            AbstractFile af = rootDir.getItem(id);
+            if (af == null) {
+                System.out.println("No such item.");
+            } else {
+                af.lsItem();
             }
         }
     }
@@ -273,8 +321,67 @@ public abstract class FileSystem {
     }
 
     private void printList(ArrayList<String> list) {
+        String a = "";
         for (int i = list.size() - 1; i >= 0; i--) {
-            System.out.println(list.get(i));
+            System.out.println(a + list.get(i));
+            a += "   ";
         }
+    }
+    
+    private String generateUUID() {
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("MMddyyyy_hhmmss");
+        return sdf.format(date);
+    }
+    
+    private String getPermissions(File f) {
+        String result = "";
+        result += f.canRead() ? "r-" : "-";
+        result += f.canWrite() ? "w" : "-";
+        result += f.canExecute()? "-e" : "-";
+        return result;
+    }
+    
+     private static void copyFolder(File src, File dest)
+    	throws IOException{
+ 
+    	if(src.isDirectory()){
+ 
+    		//if directory not exists, create it
+    		if(!dest.exists()){
+    		   dest.mkdir();
+    		   System.out.println("Directory copied from " 
+                              + src + "  to " + dest);
+    		}
+ 
+    		//list all the directory contents
+    		String files[] = src.list();
+ 
+    		for (String file : files) {
+    		   //construct the src and dest file structure
+    		   File srcFile = new File(src, file);
+    		   File destFile = new File(dest, file);
+    		   //recursive copy
+    		   copyFolder(srcFile,destFile);
+    		}
+ 
+    	} else{
+    		//if file, then copy it
+    		//Use bytes stream to support all file types
+    		InputStream in = new FileInputStream(src);
+    	        OutputStream out = new FileOutputStream(dest); 
+ 
+    	        byte[] buffer = new byte[1024];
+ 
+    	        int length;
+    	        //copy the file content in bytes 
+    	        while ((length = in.read(buffer)) > 0){
+    	    	   out.write(buffer, 0, length);
+    	        }
+ 
+    	        in.close();
+    	        out.close();
+    	        System.out.println("File copied from " + src + " to " + dest);
+    	}
     }
 }

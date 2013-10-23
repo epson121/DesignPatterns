@@ -5,7 +5,8 @@
 package lurajcevi_zadaca_1;
 
 /**
- *
+ * Subclass of FileSystem.
+ * Represents specifics of the Ext3 file system implementation.
  * @author luka
  */
 public class Ext3FileSystem extends FileSystem {
@@ -21,7 +22,12 @@ public class Ext3FileSystem extends FileSystem {
     public Ext3FileSystem(String path) {
         super(path);
     }
-
+    
+    /**
+     * If filename meets the requirements then calls super method
+     * @param folderId - folder to add file to
+     * @param filename - name of the new file
+     */
     @Override
     public void addFile(int folderId, String filename) {
         if (checkConstraints(filename)) {
@@ -30,7 +36,13 @@ public class Ext3FileSystem extends FileSystem {
             System.out.println("Bad filename.");
         }
     }
-
+    
+    /**
+     * Moving file/folder
+     * @param fileId - id of file/folder to move
+     * @param folderId - folder to move file to
+     * @param name - name of new file (none for folder)
+     */
     @Override
     public void moveFile(int fileId, int folderId, String name) {
         if (checkConstraints(name)) {
@@ -39,7 +51,13 @@ public class Ext3FileSystem extends FileSystem {
             System.out.println("Bad filename.");
         }
     }
-
+    
+    /**
+     * Copying file/folder
+     * @param fileId
+     * @param folderId
+     * @param name 
+     */
     @Override
     public void copy(int fileId, int folderId, String name) {
         if (checkConstraints(name)) {

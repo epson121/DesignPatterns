@@ -34,14 +34,15 @@ public class Lurajcevi_zadaca_1 {
     public static void main(String[] args) {
 
         String listTreeRegex = "^ls -R *$";
-        String listFromRegex = "^ls  -asd*$";
+        String listFromRegex = "^ls -c -id ([0-9]+) *$";
         String listItemRegex = "^ls -id ([0-9]+) *$";
         String listParentsRegex = "^ls -p ([0-9]+) *$";
         String addFileRegex = "^touch -id ([0-9]+) ([a-zA-Z0-9_]+) *$";
         String removeFileRegex = "^rm -id ([0-9]+) *$";
-        String moveFileRegex = "^mv --file ([0-9]+) --folder ([0-9]+) ([a-zA-Z0-9_\\.]+) *$";
+        String moveFileRegex = "^mv -f1 ([0-9]+) -f2 ([0-9]+) (.*) *$";
         String moveFolderRegex = "^mv --folder ([0-9]+) --folder ([0-9]+) *$";
-        String copyFileRegex = "^cp --file ([0-9]+) --folder ([0-9]+) ([a-zA-Z0-9_\\.]+) *$";
+        String copyFileRegex = "^cp --file ([0-9]+) --folder ([0-9]+) (.+) *$";
+        String copyFolderRegex = "^cp --folder ([0-9]+) --folder ([0-9]+) *$";
         
         if (args.length == 0) {
             System.out.println("Wrong argument.");
@@ -56,7 +57,8 @@ public class Lurajcevi_zadaca_1 {
                               Pattern.compile(removeFileRegex),
                               Pattern.compile(moveFileRegex),
                               Pattern.compile(moveFolderRegex),
-                              Pattern.compile(copyFileRegex)
+                              Pattern.compile(copyFileRegex),
+                              Pattern.compile(copyFolderRegex)
                              };
 
 
@@ -69,6 +71,7 @@ public class Lurajcevi_zadaca_1 {
         Scanner sc = new Scanner(System.in);
 
         while (!input.equals("q")) {
+            System.out.print(">> ");
             input = sc.nextLine();
             if ("q".equals(input)) {
                 break;
@@ -83,11 +86,12 @@ public class Lurajcevi_zadaca_1 {
                     fs.listFolder(0);
                     break;
                 case 1:
-                    System.out.println("List from...");
+                   id = Integer.parseInt(command.getM().group(1));
+                    fs.listFolder(id);
                     break;
                 case 2:
                     id = Integer.parseInt(command.getM().group(1));
-                    fs.listFolder(id);
+                    fs.listItem(id);
                     break;
                 case 3:
                     id = Integer.parseInt(command.getM().group(1));
@@ -103,24 +107,26 @@ public class Lurajcevi_zadaca_1 {
                     fs.remove(id);
                     break;
                 case 6:
-                    //file id
                     id = Integer.parseInt(command.getM().group(1));
                     folderId = Integer.parseInt(command.getM().group(2));
                     name = command.getM().group(3);
                     fs.moveFile(id, folderId, name);
                     break;
                 case 7:
-                    //file id
                     id = Integer.parseInt(command.getM().group(1));
                     folderId = Integer.parseInt(command.getM().group(2));
-                    //name = command.getM().group(3);
-                    fs.moveFolder(id, folderId);
+                    fs.moveFile(id, folderId, "");
                     break;
                 case 8:
                     id = Integer.parseInt(command.getM().group(1));
                     folderId = Integer.parseInt(command.getM().group(2));
                     name = command.getM().group(3);
                     fs.copy(id, folderId, name);
+                    break;
+                case 9:
+                    id = Integer.parseInt(command.getM().group(1));
+                    folderId = Integer.parseInt(command.getM().group(2));
+                    fs.copy(id, folderId, "");
                     break;
                 default:
                     System.out.println("Wrong command.");

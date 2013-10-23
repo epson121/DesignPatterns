@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package lurajcevi_zadaca_1.composite;
 
 import java.util.ArrayList;
@@ -12,19 +9,21 @@ import lurajcevi_zadaca_1.FileSystem;
  * @author luka
  */
 public class Directory implements AbstractFile {
-    
+
     private String m_name;
     private int m_id;
     private int parent_id;
     private ArrayList m_fs = new ArrayList();
     private String path;
     private long size;
-    
-    public Directory(String name, int parentId, String path) {
+    private String permissions;
+
+    public Directory(String name, int parentId, String path, String permissions) {
         this.m_name = name;
         this.m_id = FileSystem.componentId;
         this.parent_id = parentId;
         this.path = path;
+        this.permissions = permissions;
         FileSystem.componentId += 1;
     }
 
@@ -35,9 +34,7 @@ public class Directory implements AbstractFile {
     @Override
     public void ls() {
         String id = "" + this.m_id;
-        String sizeAndElements = "  " + this.size + " #el: " + this.m_fs.size();
-        System.out.println(FileSystem.g_indent + id + ":" + m_name + sizeAndElements);
-        //System.out.println(this.getPath());
+        System.out.println(FileSystem.g_indent + id + ": " + m_name);
         FileSystem.g_indent.append("   ");
         for (int i = 0; i < m_fs.size(); i++) {
             AbstractFile obj = (AbstractFile) m_fs.get(i);
@@ -45,14 +42,21 @@ public class Directory implements AbstractFile {
         }
         FileSystem.g_indent.setLength(FileSystem.g_indent.length() - 3);
     }
-    
-    
+
+    @Override
+    public void lsItem() {
+        String id = "" + this.m_id;
+        String sizeAndElements = "  " + getSize() + " #el: " 
+                                 + this.m_fs.size() + "  " + permissions;
+        System.out.println(FileSystem.g_indent + id + ":" + m_name + sizeAndElements);
+    }
+
     public AbstractFile getItem(int id) {
-        if (id == 0)
+        if (id == 0) {
             return this;
+        }
         for (int i = 0; i < this.m_fs.size(); i++) {
             AbstractFile obj = (AbstractFile) m_fs.get(i);
-            //System.out.println("This name: " + obj.getName());
             if (obj.getId() == id) {
                 return obj;
             } else if (obj.getType() == 0) {
@@ -62,12 +66,12 @@ public class Directory implements AbstractFile {
                     return af;
                 }
             }
-            
+
         }
         return null;
     }
-    
-     public boolean remove(int id) {
+
+    public boolean remove(int id) {
         for (int i = 0; i < this.m_fs.size(); i++) {
             AbstractFile obj = (AbstractFile) m_fs.get(i);
             if (obj.getId() == id) {
@@ -88,9 +92,9 @@ public class Directory implements AbstractFile {
     public int getId() {
         return this.m_id;
     }
-    
+
     @Override
-    public int getType(){
+    public int getType() {
         return 0;
     }
 
@@ -98,13 +102,7 @@ public class Directory implements AbstractFile {
     public int getParentId() {
         return this.parent_id;
     }
-    /*
-    @Override
-    public void getParents() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    */
-    
+
     @Override
     public String getName() {
         return this.m_name;
@@ -117,9 +115,21 @@ public class Directory implements AbstractFile {
 
     @Override
     public long getSize() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        calculateSize(this.m_fs);
+        return this.size;
     }
-
+    
+    private void calculateSize(ArrayList<Object> o) {
+        for (Object obj : o) {
+            AbstractFile af = (AbstractFile) obj;
+            if (af.getType() == 1) {
+                this.size += af.getSize();
+            } else {
+                calculateSize(af.getChildren());
+            }
+        }
+    }
+    
     @Override
     public ArrayList<Object> getChildren() {
         return m_fs;
@@ -128,8 +138,8 @@ public class Directory implements AbstractFile {
     public void setM_name(String m_name) {
         this.m_name = m_name;
     }
-    
-        @Override
+
+    @Override
     public void setName(String name) {
         this.m_name = name;
     }
@@ -138,7 +148,10 @@ public class Directory implements AbstractFile {
     public void setId(int id) {
         this.m_id = id;
     }
-    
-    
-    
+
+    @Override
+    public String getPermissions() {
+        return this.permissions;
+    }
+
 }
