@@ -75,6 +75,7 @@ public class Lurajcevi_zadaca_1 {
                               Pattern.compile(copyFileRegex),
                               Pattern.compile(copyFolderRegex),
                               Pattern.compile(helpRegex)
+                              Pattern.compile(copyFolderRegex)
                              };
 
 

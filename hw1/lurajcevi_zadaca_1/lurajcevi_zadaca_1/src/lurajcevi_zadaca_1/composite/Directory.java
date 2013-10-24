@@ -25,6 +25,7 @@ public class Directory implements AbstractFile {
      * @param path
      * @param permissions 
      */
+
     public Directory(String name, int parentId, String path, String permissions) {
         this.m_name = name;
         this.m_id = FileSystem.componentId;
@@ -56,6 +57,7 @@ public class Directory implements AbstractFile {
     /**
      * Prints Directories structure (attributes)
      */
+
     @Override
     public void lsItem() {
         String id = "" + this.m_id;
@@ -181,6 +183,7 @@ public class Directory implements AbstractFile {
         return this.permissions;
     }
 
+
     @Override
     public void setParentId(int id) {
         this.parent_id = id;
@@ -190,5 +193,6 @@ public class Directory implements AbstractFile {
     public void setPath(String path) {
         this.path = path;
     }
+
 
 }

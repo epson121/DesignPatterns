@@ -11,6 +11,9 @@ public abstract class FileSystemFactory {
     private static volatile FileSystemFactory factory;
     private static volatile FileSystem INSTANCE;
 
+    
+    private static volatile FileSystemFactory INSTANCE;
+       
     // SINGLETON + ABSTRACT FACTORY
     public static FileSystemFactory getFactory(String env) {
         switch (env) {
