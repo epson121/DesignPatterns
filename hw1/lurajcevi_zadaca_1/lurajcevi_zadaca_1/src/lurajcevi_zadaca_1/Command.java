@@ -7,7 +7,8 @@ package lurajcevi_zadaca_1;
 import java.util.regex.Matcher;
 
 /**
- *
+ * Helper class for simpler handling of regex matching
+ * in main class.
  * @author luka
  */
 public class Command {

@@ -18,21 +18,25 @@ public class FileX implements AbstractFile {
     private int parent_id;
     private String path;
     private long size;
+    private String permissions;
     
-    public FileX(String name, int parentId, String path, long size) {
+    public FileX(String name, int parentId, String path, long size, String permissions) {
         this.m_name = name;
         this.m_id = FileSystem.componentId;
         this.parent_id = parentId;
         this.path = path;
         this.size = size;
+        this.permissions = permissions;
         FileSystem.componentId += 1;
     }
     
     @Override
     public void ls() {
         String id = "" + this.m_id;
-        String size = "  " + this.size;
-        System.out.println(FileSystem.g_indent + id + ":" + m_name + size);
+        //String sz = "  " + this.size;
+        System.out.println(FileSystem.g_indent 
+                           + id + ": " + m_name 
+                           + "  " + permissions);
         //System.out.println(this.getPath());
     }
 
@@ -80,5 +84,24 @@ public class FileX implements AbstractFile {
     public void setId(int id) {
         this.m_id = id;
     }
-    
+
+    @Override
+    public void lsItem() {
+        ls();
+    }
+
+    @Override
+    public String getPermissions() {
+        return this.permissions;
+    }
+
+    @Override
+    public void setParentId(int id) {
+        this.parent_id = id;
+    }
+
+    @Override
+    public void setPath(String path) {
+        this.path = path;
+    }
 }
