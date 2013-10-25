@@ -12,6 +12,7 @@ public class Ext3Factory extends FileSystemFactory {
     
     @Override
     public FileSystem getFileSystem(String path) {
+        System.out.println("Ext3");
         return new Ext3FileSystem(path);
     }
 

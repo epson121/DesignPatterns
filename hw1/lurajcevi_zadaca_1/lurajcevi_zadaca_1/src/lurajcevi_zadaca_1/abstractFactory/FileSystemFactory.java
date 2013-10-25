@@ -1,7 +1,7 @@
 package lurajcevi_zadaca_1.abstractFactory;
 
-import lurajcevi_zadaca_1.FileSystem;
 
+import lurajcevi_zadaca_1.FileSystem;
 /**
  *
  * @author luka
@@ -10,9 +10,6 @@ public abstract class FileSystemFactory {
 
     private static volatile FileSystemFactory factory;
     private static volatile FileSystem INSTANCE;
-
-    
-    private static volatile FileSystemFactory INSTANCE;
        
     // SINGLETON + ABSTRACT FACTORY
     public static FileSystemFactory getFactory(String env) {

@@ -17,7 +17,6 @@ public class Lurajcevi_zadaca_1 {
     
     private static Command getM(String input, Pattern[] patterns) {
         Matcher m;
-        System.out.println("INPUT: " + input);
         for (int i = 0; i < patterns.length; i++) {
             m = patterns[i].matcher(input);
             if (m.matches()) {
@@ -36,11 +35,11 @@ public class Lurajcevi_zadaca_1 {
         String help = "COMMANDS: \n" +
                       "print tree: ls -R\n" +
                       "print from id: ls -c -id (:id)\n" +
-                      "print one item: ls -p (:id)\n" +
+                      "print one item: ls -id (:id)\n" +
                       "print parents: ls -p (:id)\n" + 
-                      "add file/folder: touch -id (:folderId) (:name)\n" +
+                      "add file: touch -id (:folderId) (:name)\n" +
                       "remove file/folder: rm -id (:id)\n" +
-                      "move file: mv -f1 (:id) -f2 (:id)\n" +
+                      "move file: mv -f1 (:id) -f2 (:id) (:name)\n" +
                       "move folder: mv --folder (:id) --folder (:id)\n" +
                       "copy file: cp --file (:id) --folder (:id) (:name)\n" +
                       "copy folder: cp --folder (:id) --folder (:id)\n" +
@@ -51,7 +50,7 @@ public class Lurajcevi_zadaca_1 {
         String listFromRegex = "^ls -c -id ([0-9]+) *$";
         String listItemRegex = "^ls -id ([0-9]+) *$";
         String listParentsRegex = "^ls -p ([0-9]+) *$";
-        String addFileRegex = "^touch -id ([0-9]+) ([a-zA-Z0-9_]+) *$";
+        String addFileRegex = "^touch -id ([0-9]+) (.*) *$";
         String removeFileRegex = "^rm -id ([0-9]+) *$";
         String moveFileRegex = "^mv -f1 ([0-9]+) -f2 ([0-9]+) (.*) *$";
         String moveFolderRegex = "^mv --folder ([0-9]+) --folder ([0-9]+) *$";
@@ -74,8 +73,7 @@ public class Lurajcevi_zadaca_1 {
                               Pattern.compile(moveFolderRegex),
                               Pattern.compile(copyFileRegex),
                               Pattern.compile(copyFolderRegex),
-                              Pattern.compile(helpRegex)
-                              Pattern.compile(copyFolderRegex)
+                              Pattern.compile(helpRegex),
                              };
 
 
@@ -153,7 +151,7 @@ public class Lurajcevi_zadaca_1 {
             }
             } catch (Exception e) {
                 System.out.println("Wrong command.");
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
         System.out.println("Exiting.");

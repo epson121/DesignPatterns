@@ -57,7 +57,6 @@ public class Directory implements AbstractFile {
     /**
      * Prints Directories structure (attributes)
      */
-
     @Override
     public void lsItem() {
         String id = "" + this.m_id;

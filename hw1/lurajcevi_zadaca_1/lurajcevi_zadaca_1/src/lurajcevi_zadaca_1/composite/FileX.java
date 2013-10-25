@@ -33,11 +33,9 @@ public class FileX implements AbstractFile {
     @Override
     public void ls() {
         String id = "" + this.m_id;
-        //String sz = "  " + this.size;
         System.out.println(FileSystem.g_indent 
                            + id + ": " + m_name 
                            + "  " + permissions);
-        //System.out.println(this.getPath());
     }
 
     @Override
