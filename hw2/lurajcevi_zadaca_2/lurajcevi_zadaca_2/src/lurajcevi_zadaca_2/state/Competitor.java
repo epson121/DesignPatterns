@@ -13,4 +13,14 @@ public class Competitor implements SportsClubState {
     public Competitor(SportsClub sportsClub) {
         this.sportsClub = sportsClub;
     }
+
+    @Override
+    public void playRound() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void calculateEfficiency() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
