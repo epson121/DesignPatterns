@@ -35,14 +35,13 @@ public class Season extends Thread implements Subject {
         while (true) {
             try {
                 start = System.currentTimeMillis();
-                // TODO check if tables have changed and append new one or null
                 roundTable = new Table(getSportsClubList());
-                //roundTable.printTable();
                 round = new Round(Season.roundId,
                                   roundTable,
                                   this.generateRoundResults(Season.roundId));
                 round.printResults();
                 round.printTable();
+                notifyForEfficiency();
                 seasonRounds.addRound(round);
                 Season.roundId += 1;
                 duration = System.currentTimeMillis() - start;
@@ -84,7 +83,6 @@ public class Season extends Thread implements Subject {
         if (!sc.isEmpty()) {
             results.add(new SingleClubResult((SportsClub) sc.get(0)));
         }
-        //System.out.println("RES: " + results);
         return results;
     }
 
@@ -128,24 +126,14 @@ public class Season extends Thread implements Subject {
         return result;
     }
 
-    private boolean tableChanged(int roundId, Table roundTable) {
-        //Iterator<Round> iterator = seasonRounds.iterator();
-        /*List<Round> roundList = seasonRounds.getSeasonRounds();
-        if (roundId == 1) {
-            return false;
+    private void notifyForEfficiency() {
+        for (Observer o : observerList) {
+            SportsClub s = (SportsClub) o;
+            int points = s.getPoints();
+            int rounds = s.getRoundsPlayedList().size();
+            if (rounds != 0)
+                s.notifyForEfficiency((double) points/rounds);
         }
-        while (roundId > 1) {
-            if (roundList.get(roundId - 1).getTable() == null) {
-                roundId -= 1;
-            } else if (roundList.get(- 1).getTable().equals(roundTable)) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        return false;*/
-        System.out.println("THIS:");
-        roundTable.printTable();
-        return true;
     }
+    
 }

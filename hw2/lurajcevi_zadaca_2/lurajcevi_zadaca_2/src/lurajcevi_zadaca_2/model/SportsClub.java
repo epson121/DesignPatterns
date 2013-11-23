@@ -1,6 +1,7 @@
 
 package lurajcevi_zadaca_2.model;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import lurajcevi_zadaca_2.observer.Observer;
@@ -18,6 +19,7 @@ public class SportsClub implements Comparable<SportsClub>, Observer {
     private int sportsClubId;
     private int points;
     private int position;
+    private double efficiency;
     private String sportsClubName;
     private SportsClubState competitor;
     private SportsClubState weakCompetitor;
@@ -42,7 +44,7 @@ public class SportsClub implements Comparable<SportsClub>, Observer {
         this.points = 0;
         this.position = 1;
         this.roundsPlayedList = new ArrayList<>();
-        
+        this.efficiency = 1.0;
     }
 
     public int getSportsClubId() {
@@ -114,7 +116,19 @@ public class SportsClub implements Comparable<SportsClub>, Observer {
     public void addRoundPlayed(int roundPlayedId) {
         this.roundsPlayedList.add(roundPlayedId);
     }
+
+    public double getEfficiency() {
+        return efficiency;
+    }
     
-    
-    
+    public void notifyForEfficiency(double efficiency) {
+        if (this.efficiency != efficiency) {
+            DecimalFormat df = new DecimalFormat("#.##");
+            System.out.println("Change in efficiency:");
+            System.out.println(this.sportsClubName + " went from " 
+                               + df.format(this.efficiency) + " to " 
+                               + df.format(efficiency));
+            this.efficiency = efficiency;
+        }
+    }
 }
