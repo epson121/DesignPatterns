@@ -15,10 +15,15 @@ public class Season extends Thread implements Subject {
     private List<Observer> observerList = new ArrayList<>();
     private Random rand = new Random();
     private SeasonRounds seasonRounds = new SeasonRounds();
+    private SeasonRounds controlSeasonRounds = new SeasonRounds();
     public static int roundId = 1;
+    private int sleepInterval, controlInterval, threshold;
 
     // TODO dati argument za dretvu
-    public Season() {
+    public Season(int sleepInterval, int controlInterval, int threshold) {
+        this.sleepInterval = sleepInterval;
+        this.controlInterval = controlInterval;
+        this.threshold = threshold;
     }
 
     @Override
@@ -28,9 +33,9 @@ public class Season extends Thread implements Subject {
 
     @Override
     public void run() {
-        List<Result> roundResults;
         Table roundTable;
         Round round;
+        int controlIntervalCounter = 0;
         long start, duration = 0;
         while (true) {
             try {
@@ -42,8 +47,16 @@ public class Season extends Thread implements Subject {
                 round.printResults();
                 round.printTable();
                 notifyForEfficiency();
+                if (controlSeasonRounds.getSeasonRounds().isEmpty()) {
+                    controlSeasonRounds.addRound(round);
+                }
                 seasonRounds.addRound(round);
                 Season.roundId += 1;
+                controlIntervalCounter += 1;
+                if (controlIntervalCounter == controlInterval) {
+                    controlIntervalCounter = 0;
+                    //TODO check status of every club and change states accordingly
+                }
                 duration = System.currentTimeMillis() - start;
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -51,7 +64,7 @@ public class Season extends Thread implements Subject {
             try {
                 int interval;
                 //TODO take argument from main (make static, or send as parameter)
-                interval = (int) ((6 * 1000) - duration);
+                interval = (int) ((sleepInterval * 1000) - duration);
                 System.out.println("Spavanje: " + interval);
                 sleep(interval);
             } catch (InterruptedException ex) {

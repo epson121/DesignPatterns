@@ -27,9 +27,8 @@ public class Lurajcevi_zadaca_2 {
     public static void main(String[] args) {
         Pattern p = Pattern.compile(sportsClubRegex);
         Matcher m;
-        List<SportsClub> clubs = new ArrayList<>();
-        Table initialTable;
-        if (args.length < 4) {
+        
+        if (args.length < 4 ) {
             System.out.println("You must provide exactly four (4) arguments.");
             return;
         }
@@ -39,7 +38,9 @@ public class Lurajcevi_zadaca_2 {
             DataInputStream in = new DataInputStream(fstream);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String strLine;
-            Season season = new Season();
+            Season season = new Season(Integer.parseInt(args[1]),
+                                       Integer.parseInt(args[2]),
+                                       Integer.parseInt(args[3]));
             while ((strLine = br.readLine()) != null) {
                 // TODO unique club names
                 // Jedan klub može imati samo jedan zapis! 
