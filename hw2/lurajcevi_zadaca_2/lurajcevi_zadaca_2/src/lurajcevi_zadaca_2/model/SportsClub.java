@@ -1,6 +1,7 @@
 
 package lurajcevi_zadaca_2.model;
 
+import java.util.Comparator;
 import lurajcevi_zadaca_2.observer.Observer;
 import lurajcevi_zadaca_2.state.Competitor;
 import lurajcevi_zadaca_2.state.Disqualified;
@@ -23,14 +24,14 @@ public class SportsClub implements Comparable<SportsClub>, Observer {
     private Season season;
     
     // set starting state
-    private SportsClubState state = competitor;
+    private SportsClubState state;
 
     public SportsClub(int sportsClubId, String sportsClubName, Season season) {
         // instantiate states
         this.competitor = new Competitor(this);
         this.disqualified = new Disqualified(this);
         this.weakCompetitor = new WeakCompetitor(this);
-        
+        this.state = competitor;
         this.season = season;
         season.registerObserver(this);
         
@@ -68,7 +69,7 @@ public class SportsClub implements Comparable<SportsClub>, Observer {
     public void setPosition(int position) {
         this.position = position;
     }
-
+    
     /**
      * needed for comparable interface
      * if it returns negative number, this SportsCLub is smaller than the other
@@ -82,10 +83,39 @@ public class SportsClub implements Comparable<SportsClub>, Observer {
         int comparePoints = o.getPoints();
         return comparePoints - this.points;
     }
+    
+    public static Comparator<SportsClub> SportsClubComparator 
+                          = new Comparator<SportsClub>() {
+ 
+	    public int compare(SportsClub sc1, SportsClub sc2) {
+ 
+	      //ascending order
+	      return sc1.compareTo(sc2);
+ 
+	      //descending order
+	      //return fruitName2.compareTo(fruitName1);
+	    }
+ 
+	};
 
-    @Override
-    public void updateState(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void setState(SportsClubState state) {
+        this.state = state;
+    }
+
+    public SportsClubState getCompetitor() {
+        return competitor;
+    }
+
+    public SportsClubState getWeakCompetitor() {
+        return weakCompetitor;
+    }
+
+    public SportsClubState getDisqualified() {
+        return disqualified;
+    }
+    
+    public boolean canPlay() {
+        return this.state.canPlay();
     }
     
 }

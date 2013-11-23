@@ -11,5 +11,9 @@ public class SingleClubResult extends Result {
     public SingleClubResult(SportsClub sc) {
         this.sc = sc;
     }
+
+    public SportsClub getSc() {
+        return sc;
+    }
     
 }

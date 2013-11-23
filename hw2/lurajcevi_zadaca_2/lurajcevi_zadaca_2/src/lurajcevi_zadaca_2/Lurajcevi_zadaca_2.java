@@ -41,13 +41,16 @@ public class Lurajcevi_zadaca_2 {
             String strLine;
             Season season = new Season();
             while ((strLine = br.readLine()) != null) {
+                // TODO unique club names
+                // Jedan klub može imati samo jedan zapis! 
                 //System.out.println(strLine);
                 m = p.matcher(strLine);
                 //System.out.println(m.matches());
                 if (m.matches()) {
-                    SportsClub sp = new SportsClub(Integer.parseInt(m.group(1)),
-                                                   m.group(2), season);
-                    clubs.add(sp);
+                    new SportsClub(Integer.parseInt(m.group(1)),
+                                                   m.group(2), 
+                                                   season);
+                    //clubs.add(sp);
                 }
                 else {
                     throw new Exception("File corrupted.");
@@ -61,7 +64,7 @@ public class Lurajcevi_zadaca_2 {
             in.close();
         } catch (Exception e) {
             //TODO print normal error message
-            System.err.println("Error: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

@@ -14,13 +14,20 @@ public class Competitor implements SportsClubState {
         this.sportsClub = sportsClub;
     }
 
-    @Override
-    public void playRound() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+     @Override
+    public void decreasedEfficiency() {
+       this.sportsClub.setState(sportsClub.getWeakCompetitor());
     }
 
     @Override
-    public void calculateEfficiency() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void increasedEfficiency() {
+        // do nothing
     }
+
+    @Override
+    public boolean canPlay() {
+        return true;
+    }
+
+
 }

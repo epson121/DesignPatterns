@@ -11,7 +11,7 @@ public class Result {
     
     private SportsClub firstClub;
     private SportsClub secondClub;
-    private int winner;
+    private int winner, firstClubScore, secondClubScore;
     private Random rand = new Random();
     
     public Result(){}
@@ -27,8 +27,8 @@ public class Result {
      * accordingly.
      */
     private void playMatch() {
-        int firstClubScore = rand.nextInt(5);
-        int secondClubScore = rand.nextInt(5);
+        firstClubScore = rand.nextInt(5);
+        secondClubScore = rand.nextInt(5);
         if (firstClubScore > secondClubScore) {
             this.winner = 1;
             this.firstClub.updatePoints(3);
@@ -52,6 +52,14 @@ public class Result {
 
     public int getWinner() {
         return winner;
+    }
+
+    public int getFirstClubScore() {
+        return firstClubScore;
+    }
+
+    public int getSecondClubScore() {
+        return secondClubScore;
     }
     
 }
