@@ -5,48 +5,46 @@ import java.util.List;
 import java.util.Random;
 import lurajcevi_zadaca_2.observer.Observer;
 import lurajcevi_zadaca_2.observer.Subject;
-import lurajcevi_zadaca_2.state.Competitor;
 
 /**
  *
  * @author luka
  */
 public class Season extends Thread implements Subject {
-    
+
     private List<Observer> observerList = new ArrayList<>();
     private Random rand = new Random();
-    
+    private SeasonRounds seasonRounds = new SeasonRounds();
+    public static int roundId = 1;
+
     // TODO dati argument za dretvu
-    public Season() {}
-    
+    public Season() {
+    }
+
     @Override
     public synchronized void start() {
-        super.start(); 
+        super.start();
     }
 
     @Override
     public void run() {
         List<Result> roundResults;
         Table roundTable;
+        Round round;
         long start, duration = 0;
         while (true) {
             try {
                 start = System.currentTimeMillis();
-                roundResults = this.generateRoundResults();
-                for (Result r : roundResults) {
-                    if (r.getSecondClub() == null) {
-                        SingleClubResult scr = (SingleClubResult) r;
-                        System.out.println(scr.getSc().getSportsClubName() + " paused this round.");
-                    } else {
-                        System.out.println(r.getFirstClub().getSportsClubName()
-                                           + ":" + r.getSecondClub().getSportsClubName()
-                                           + " " + r.getFirstClubScore() + " : " 
-                                           + r.getSecondClubScore());
-                    }
-                }
+                // TODO check if tables have changed and append new one or null
                 roundTable = new Table(getSportsClubList());
-                roundTable.generateTable();
-                roundTable.printTable();
+                //roundTable.printTable();
+                round = new Round(Season.roundId,
+                                  roundTable,
+                                  this.generateRoundResults(Season.roundId));
+                round.printResults();
+                round.printTable();
+                seasonRounds.addRound(round);
+                Season.roundId += 1;
                 duration = System.currentTimeMillis() - start;
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -54,7 +52,7 @@ public class Season extends Thread implements Subject {
             try {
                 int interval;
                 //TODO take argument from main (make static, or send as parameter)
-                interval = (int) ((10 * 1000) - duration);
+                interval = (int) ((6 * 1000) - duration);
                 System.out.println("Spavanje: " + interval);
                 sleep(interval);
             } catch (InterruptedException ex) {
@@ -68,27 +66,28 @@ public class Season extends Thread implements Subject {
         super.interrupt();
     }
 
-    public List<Result> generateRoundResults() {
+    public List<Result> generateRoundResults(int roundId) {
         // only from the competitors
         ArrayList<Observer> sc = getCompetitors();
         /*for (Observer o : sc) {
-            System.out.println("EL");
-        }*/
+         System.out.println("EL");
+         }*/
         List<Result> results = new ArrayList<>();
         while (sc.size() > 1) {
             SportsClub first = (SportsClub) sc.get(rand.nextInt(sc.size()));
             sc.remove(first);
             SportsClub second = (SportsClub) sc.get(rand.nextInt(sc.size()));
             sc.remove(second);
-            Result r = new Result(first, second);
+            Result r = new Result(first, second, roundId);
             results.add(r);
         }
-        if (!sc.isEmpty())
+        if (!sc.isEmpty()) {
             results.add(new SingleClubResult((SportsClub) sc.get(0)));
+        }
         //System.out.println("RES: " + results);
         return results;
     }
-    
+
     public Table generateTable() {
         return null;
     }
@@ -127,5 +126,26 @@ public class Season extends Thread implements Subject {
             result.add(s);
         }
         return result;
+    }
+
+    private boolean tableChanged(int roundId, Table roundTable) {
+        //Iterator<Round> iterator = seasonRounds.iterator();
+        /*List<Round> roundList = seasonRounds.getSeasonRounds();
+        if (roundId == 1) {
+            return false;
+        }
+        while (roundId > 1) {
+            if (roundList.get(roundId - 1).getTable() == null) {
+                roundId -= 1;
+            } else if (roundList.get(- 1).getTable().equals(roundTable)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;*/
+        System.out.println("THIS:");
+        roundTable.printTable();
+        return true;
     }
 }

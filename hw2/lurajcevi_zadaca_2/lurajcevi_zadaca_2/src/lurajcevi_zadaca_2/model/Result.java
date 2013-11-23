@@ -12,13 +12,15 @@ public class Result {
     private SportsClub firstClub;
     private SportsClub secondClub;
     private int winner, firstClubScore, secondClubScore;
+    private int roundId;
     private Random rand = new Random();
     
     public Result(){}
     
-    public Result(SportsClub firstClub, SportsClub secondClub) {
+    public Result(SportsClub firstClub, SportsClub secondClub, int roundId) {
         this.firstClub = firstClub;
         this.secondClub = secondClub;
+        this.roundId = roundId;
         this.playMatch();
     }
     
@@ -40,6 +42,14 @@ public class Result {
             this.firstClub.updatePoints(1);
             this.secondClub.updatePoints(1);
         }
+        this.firstClub.addRoundPlayed(roundId);
+        this.secondClub.addRoundPlayed(roundId);
+    }
+    
+    public void printResult() {
+        System.out.println(firstClub.getSportsClubName() + " : " 
+                           + secondClub.getSportsClubName() + " " 
+                           + firstClubScore + " : " + secondClubScore);
     }
 
     public SportsClub getFirstClub() {

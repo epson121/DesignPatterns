@@ -1,7 +1,7 @@
 
 package lurajcevi_zadaca_2.model;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -11,17 +11,15 @@ import java.util.List;
  */
 public class Table {
     private List<SportsClub> sportsClubList;
+    private static List<SportsClub> oldTable = null;
 
     public Table(List<SportsClub> sportsClubList) {
         this.sportsClubList = sportsClubList;
+        generateTable();
     }
     
-    public void generateTable() {
-        //TODO check if table place changed and notify
+    private void generateTable() {
         Collections.sort(this.sportsClubList);
-        /*for (SportsClub s : this.sportsClubList) {
-            System.out.println(s.getSportsClubName());
-        }*/
         int currentPoints = this.sportsClubList.get(0).getPoints();
         int currentPosition = 1;
         for (int i = 0; i < this.sportsClubList.size(); i++){
@@ -34,6 +32,9 @@ public class Table {
               this.sportsClubList.get(i).setPosition(currentPosition);
             }
         }
+        if (!tableChanged()) {
+            this.sportsClubList = null;
+        }
     }
 
     public List<SportsClub> getSportsClubList() {
@@ -41,9 +42,23 @@ public class Table {
     }
     
     public void printTable() {
-        for (SportsClub sc : sportsClubList) {
+        for (SportsClub sc : this.sportsClubList) {
             System.out.println(sc.getPosition() + " " + sc.getSportsClubName()
                                + " " + sc.getPoints());
+        }
+    }
+    
+    public boolean tableChanged() {
+        if (Table.oldTable == null) {
+            Table.oldTable = new ArrayList<>(sportsClubList);
+            return true;
+        } else {
+            if (Table.oldTable.equals(sportsClubList)) {
+                return false;
+            } else {
+                Table.oldTable = new ArrayList<>(sportsClubList);
+                return true;
+            }
         }
     }
     

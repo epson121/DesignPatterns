@@ -15,5 +15,12 @@ public class SingleClubResult extends Result {
     public SportsClub getSc() {
         return sc;
     }
+
+    @Override
+    public void printResult() {
+        System.out.println(sc.getSportsClubName() + " paused this round.");
+    }
+    
+    
     
 }

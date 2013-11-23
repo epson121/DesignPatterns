@@ -1,7 +1,8 @@
 
 package lurajcevi_zadaca_2.model;
 
-import java.util.Comparator;
+import java.util.ArrayList;
+import java.util.List;
 import lurajcevi_zadaca_2.observer.Observer;
 import lurajcevi_zadaca_2.state.Competitor;
 import lurajcevi_zadaca_2.state.Disqualified;
@@ -22,6 +23,7 @@ public class SportsClub implements Comparable<SportsClub>, Observer {
     private SportsClubState weakCompetitor;
     private SportsClubState disqualified;
     private Season season;
+    private List<Integer> roundsPlayedList;
     
     // set starting state
     private SportsClubState state;
@@ -39,6 +41,7 @@ public class SportsClub implements Comparable<SportsClub>, Observer {
         this.sportsClubName = sportsClubName;
         this.points = 0;
         this.position = 1;
+        this.roundsPlayedList = new ArrayList<>();
         
     }
 
@@ -84,20 +87,6 @@ public class SportsClub implements Comparable<SportsClub>, Observer {
         return comparePoints - this.points;
     }
     
-    public static Comparator<SportsClub> SportsClubComparator 
-                          = new Comparator<SportsClub>() {
- 
-	    public int compare(SportsClub sc1, SportsClub sc2) {
- 
-	      //ascending order
-	      return sc1.compareTo(sc2);
- 
-	      //descending order
-	      //return fruitName2.compareTo(fruitName1);
-	    }
- 
-	};
-
     public void setState(SportsClubState state) {
         this.state = state;
     }
@@ -117,5 +106,15 @@ public class SportsClub implements Comparable<SportsClub>, Observer {
     public boolean canPlay() {
         return this.state.canPlay();
     }
+
+    public List<Integer> getRoundsPlayedList() {
+        return roundsPlayedList;
+    }
+
+    public void addRoundPlayed(int roundPlayedId) {
+        this.roundsPlayedList.add(roundPlayedId);
+    }
+    
+    
     
 }
