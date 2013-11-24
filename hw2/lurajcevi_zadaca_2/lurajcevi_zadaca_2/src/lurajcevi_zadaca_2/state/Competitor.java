@@ -14,19 +14,24 @@ public class Competitor implements SportsClubState {
         this.sportsClub = sportsClub;
     }
 
-     @Override
-    public void decreasedEfficiency() {
-       this.sportsClub.setState(sportsClub.getWeakCompetitor());
+    @Override
+    public boolean canPlay() {
+        return true;
     }
 
     @Override
-    public void increasedEfficiency() {
+    public void positionLoss() {
+        this.sportsClub.setState(sportsClub.getWeakCompetitor());
+    }
+
+    @Override
+    public void positionGain() {
         // do nothing
     }
 
     @Override
-    public boolean canPlay() {
-        return true;
+    public void samePosition() {
+        // do nothing
     }
 
 

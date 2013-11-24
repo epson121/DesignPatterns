@@ -4,6 +4,10 @@ package lurajcevi_zadaca_2.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import lurajcevi_zadaca_2.command.Command;
+import lurajcevi_zadaca_2.command.PositionGain;
+import lurajcevi_zadaca_2.command.PositionLoss;
+import lurajcevi_zadaca_2.command.SamePosition;
 
 /**
  *
@@ -32,6 +36,8 @@ public class Table {
               this.sportsClubList.get(i).setPosition(currentPosition);
             }
         }
+        System.out.println("INITIAL: ");
+        printTable();
         if (!tableChanged()) {
             this.sportsClubList = null;
         }
@@ -53,6 +59,13 @@ public class Table {
             Table.oldTable = new ArrayList<>(sportsClubList);
             return true;
         } else {
+            System.out.println("OLD TABLE: ");
+            for (SportsClub sc : oldTable) {
+            System.out.println(sc.getPosition() + " " + sc.getSportsClubName()
+                               + " " + sc.getPoints());
+            }
+            System.out.println("THIS TABLE: ");
+            printTable();
             if (Table.oldTable.equals(sportsClubList)) {
                 return false;
             } else {
@@ -60,6 +73,28 @@ public class Table {
                 return true;
             }
         }
+    }
+    
+     public List<Command> tableDifference(Table secondTable) {
+        List<Command> result = new ArrayList<>();
+        for (SportsClub scf : this.getSportsClubList()) {
+            int firstClubId = scf.getSportsClubId();
+            int positionBefore = scf.getPosition();
+            for (SportsClub scs : secondTable.getSportsClubList()) {
+                if (scs.getSportsClubId() == firstClubId){
+                    int positionAfter = scs.getPosition();
+                    if (positionBefore > positionAfter) {
+                        result.add(new PositionLoss(scs));
+                    } else if (positionBefore < positionAfter) {
+                        result.add(new PositionGain(scs));
+                    } else {
+                        result.add(new SamePosition(scs));
+                    }
+                    break;
+                }
+            }
+        }
+        return result;
     }
     
 }

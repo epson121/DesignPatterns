@@ -13,20 +13,25 @@ public class Disqualified implements SportsClubState {
     public Disqualified(SportsClub sportsClub) {
         this.sportsClub = sportsClub;
     }
-
-    @Override
-    public void decreasedEfficiency() {
-        // do nothing
-    }
-
-    @Override
-    public void increasedEfficiency() {
-        // do nothing
-    }
     
     @Override
     public boolean canPlay() {
         return false;
+    }
+
+    @Override
+    public void positionLoss() {
+        // do nothing
+    }
+
+    @Override
+    public void positionGain() {
+        // do nothing
+    }
+
+    @Override
+    public void samePosition() {
+        // do nothing
     }
 
 

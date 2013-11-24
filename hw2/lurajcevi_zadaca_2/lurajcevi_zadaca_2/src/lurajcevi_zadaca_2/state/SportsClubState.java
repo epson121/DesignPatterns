@@ -10,7 +10,8 @@ package lurajcevi_zadaca_2.state;
  */
 public interface SportsClubState {
     
-    public void decreasedEfficiency();
-    public void increasedEfficiency();
+    public void positionLoss();
+    public void positionGain();
+    public void samePosition();
     public boolean canPlay();
 }

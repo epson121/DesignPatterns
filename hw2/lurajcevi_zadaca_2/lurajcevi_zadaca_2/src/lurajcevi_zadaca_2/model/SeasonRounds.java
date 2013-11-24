@@ -11,48 +11,29 @@ import java.util.List;
 public class SeasonRounds {
 
     private List<Round> seasonRounds;
+    private int roundCount;
 
     public SeasonRounds() {
         this.seasonRounds = new ArrayList<>();
+        this.roundCount = 0;
     }
 
     public void addRound(Round round) {
         seasonRounds.add(round);
+        roundCount += 1;
     }
 
     public List<Round> getSeasonRounds() {
         return seasonRounds;
     }
-    
-    
 
-    public Iterator<Round> iterator() {
-        return new SeasonRoundsIterator();
+    public int getRoundCount() {
+        return roundCount;
+    }
+    
+    public Round getSeasonRound(int id) {
+        return seasonRounds.get(id-1);
     }
 
-    class SeasonRoundsIterator implements Iterator<Round> {
-        
-        int currentIndex = 0;
-        
-        @Override
-        public boolean hasNext() {
-            if (currentIndex >= seasonRounds.size()) {
-                return false;
-            } else {
-                return true;
-            }
-
-        }
-
-        @Override
-        public Round next() {
-            return seasonRounds.get(currentIndex++);
-        }
-
-        @Override
-        public void remove() {
-            seasonRounds.remove(--currentIndex);
-        }
-
-    }
+    
 }

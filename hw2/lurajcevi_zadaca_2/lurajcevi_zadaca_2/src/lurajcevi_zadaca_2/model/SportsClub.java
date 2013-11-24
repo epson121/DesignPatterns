@@ -37,7 +37,6 @@ public class SportsClub implements Comparable<SportsClub>, Observer {
         this.weakCompetitor = new WeakCompetitor(this);
         this.state = competitor;
         this.season = season;
-        season.registerObserver(this);
         
         this.sportsClubId = sportsClubId;
         this.sportsClubName = sportsClubName;
@@ -45,6 +44,7 @@ public class SportsClub implements Comparable<SportsClub>, Observer {
         this.position = 1;
         this.roundsPlayedList = new ArrayList<>();
         this.efficiency = 1.0;
+        season.registerObserver(this);
     }
 
     public int getSportsClubId() {
@@ -130,5 +130,17 @@ public class SportsClub implements Comparable<SportsClub>, Observer {
                                + df.format(efficiency));
             this.efficiency = efficiency;
         }
+    }
+    
+    public void positionLoss() {
+        state.positionLoss();
+    }
+    
+    public void positionGain() {
+        state.positionGain();
+    }
+    
+    public void samePosition() {
+        state.samePosition();
     }
 }

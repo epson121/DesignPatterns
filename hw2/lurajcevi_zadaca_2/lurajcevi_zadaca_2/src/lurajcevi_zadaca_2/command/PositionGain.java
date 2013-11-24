@@ -7,11 +7,17 @@ import lurajcevi_zadaca_2.model.SportsClub;
  *
  * @author luka
  */
-public class DecreasedEfficiency {
+public class PositionGain implements Command {
+    
     private SportsClub sportsClub;
 
-    public DecreasedEfficiency(SportsClub sportsClub) {
+    public PositionGain(SportsClub sportsClub) {
         this.sportsClub = sportsClub;
+    }
+    
+    @Override
+    public void execute() {
+        sportsClub.positionGain();
     }
     
 }

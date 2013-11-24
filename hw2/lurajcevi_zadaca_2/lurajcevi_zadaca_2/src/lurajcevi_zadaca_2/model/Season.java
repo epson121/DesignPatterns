@@ -3,6 +3,7 @@ package lurajcevi_zadaca_2.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import lurajcevi_zadaca_2.command.Command;
 import lurajcevi_zadaca_2.observer.Observer;
 import lurajcevi_zadaca_2.observer.Subject;
 
@@ -18,6 +19,11 @@ public class Season extends Thread implements Subject {
     private SeasonRounds controlSeasonRounds = new SeasonRounds();
     public static int roundId = 1;
     private int sleepInterval, controlInterval, threshold;
+    
+    public static enum SportsClubTableStatus {
+        SAME_POSITION, POSITION_GAIN, POSITION_LOSS
+    }
+    
 
     // TODO dati argument za dretvu
     public Season(int sleepInterval, int controlInterval, int threshold) {
@@ -40,6 +46,7 @@ public class Season extends Thread implements Subject {
         while (true) {
             try {
                 start = System.currentTimeMillis();
+                System.out.println("ROUND " + Season.roundId);
                 roundTable = new Table(getSportsClubList());
                 round = new Round(Season.roundId,
                                   roundTable,
@@ -47,7 +54,7 @@ public class Season extends Thread implements Subject {
                 round.printResults();
                 round.printTable();
                 notifyForEfficiency();
-                if (controlSeasonRounds.getSeasonRounds().isEmpty()) {
+                if (controlSeasonRounds.getRoundCount() == 0) {
                     controlSeasonRounds.addRound(round);
                 }
                 seasonRounds.addRound(round);
@@ -55,7 +62,9 @@ public class Season extends Thread implements Subject {
                 controlIntervalCounter += 1;
                 if (controlIntervalCounter == controlInterval) {
                     controlIntervalCounter = 0;
+                    controlSeasonRounds.addRound(round);
                     //TODO check status of every club and change states accordingly
+                    updateClubStatus();
                 }
                 duration = System.currentTimeMillis() - start;
             } catch (Exception ex) {
@@ -146,6 +155,20 @@ public class Season extends Thread implements Subject {
             int rounds = s.getRoundsPlayedList().size();
             if (rounds != 0)
                 s.notifyForEfficiency((double) points/rounds);
+        }
+    }
+
+    private void updateClubStatus() {
+        int length = controlSeasonRounds.getRoundCount();
+        Table lastControlTable, newControlTable;
+        List<Command> tableChanges = null;
+        if (length >= 2) {
+            lastControlTable = controlSeasonRounds.getSeasonRound(length-1).getTable();
+            newControlTable = controlSeasonRounds.getSeasonRound(length-2).getTable();
+            tableChanges = lastControlTable.tableDifference(newControlTable);
+        }
+        for (Command c : tableChanges) {
+            c.execute();
         }
     }
     
