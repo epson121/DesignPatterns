@@ -21,6 +21,10 @@ public class Table {
     }
 
     private void generateTable() {
+        // change the way positions are generated
+        // 1, 1, 3 
+        // instead of
+        // 1, 1, 2
         Collections.sort(this.sportsClubList);
         int currentPoints = this.sportsClubList.get(0).getPoints();
         int currentPosition = 1;

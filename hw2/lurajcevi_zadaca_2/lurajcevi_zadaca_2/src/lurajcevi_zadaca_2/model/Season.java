@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import lurajcevi_zadaca_2.archive.RoundArchiveItem;
+import lurajcevi_zadaca_2.archive.TableArchiveItem;
 import lurajcevi_zadaca_2.command.Command;
 import lurajcevi_zadaca_2.observer.Observer;
 import lurajcevi_zadaca_2.observer.Subject;
@@ -79,7 +80,18 @@ public class Season extends Thread implements Subject {
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
+            
         }
+        for (RoundArchiveItem rai : seasonRounds.getSeasonRounds()) {
+                System.out.println("ROUND : " + rai.getRoundId());
+                for (TableArchiveItem t : rai.getTableList()) {
+                    System.out.println(t.getPosition() + "  "
+                                       + t.getName() + "  " + t.getPoints());
+                }
+                for (Result r : rai.getResultList()) {
+                    r.printResult();
+                }
+            }
         
     }
 

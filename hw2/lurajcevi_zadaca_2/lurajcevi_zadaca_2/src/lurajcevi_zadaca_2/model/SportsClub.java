@@ -3,7 +3,6 @@ package lurajcevi_zadaca_2.model;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 import lurajcevi_zadaca_2.observer.Observer;
 import lurajcevi_zadaca_2.state.Competitor;
 import lurajcevi_zadaca_2.state.Disqualified;
