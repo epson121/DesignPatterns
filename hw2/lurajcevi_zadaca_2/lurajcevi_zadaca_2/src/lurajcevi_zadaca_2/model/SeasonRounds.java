@@ -1,8 +1,8 @@
 package lurajcevi_zadaca_2.model;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import lurajcevi_zadaca_2.archive.RoundArchiveItem;
 
 /**
  *
@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class SeasonRounds {
 
-    private List<Round> seasonRounds;
+    private List<RoundArchiveItem> seasonRounds;
     private int roundCount;
 
     public SeasonRounds() {
@@ -18,12 +18,12 @@ public class SeasonRounds {
         this.roundCount = 0;
     }
 
-    public void addRound(Round round) {
+    public void addRound(RoundArchiveItem round) {
         seasonRounds.add(round);
         roundCount += 1;
     }
 
-    public List<Round> getSeasonRounds() {
+    public List<RoundArchiveItem> getSeasonRounds() {
         return seasonRounds;
     }
 
@@ -31,8 +31,8 @@ public class SeasonRounds {
         return roundCount;
     }
     
-    public Round getSeasonRound(int id) {
-        return seasonRounds.get(id-1);
+    public RoundArchiveItem getSeasonRound(int id) {
+        return seasonRounds.get(id);
     }
 
     

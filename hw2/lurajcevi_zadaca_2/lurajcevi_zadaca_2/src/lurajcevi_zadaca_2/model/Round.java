@@ -2,6 +2,7 @@
 package lurajcevi_zadaca_2.model;
 
 import java.util.List;
+import lurajcevi_zadaca_2.archive.RoundArchiveItem;
 
 /**
  *
@@ -13,10 +14,11 @@ public class Round {
     private Table table = null;
     private List<Result> results;
 
-    public Round(int id, Table table, List<Result> results) {
+    public Round(int id, List<SportsClub> sportsClubList, List<Result> results) {
         this.id = id;
-        if (table.getSportsClubList() != null) {
-            this.table = new Table(table.getSportsClubList());
+        this.table = new Table(sportsClubList);
+        if (table.getSportsClubList() == null) {
+                this.table = null;
         }
         this.results = results;
     }
@@ -49,6 +51,13 @@ public class Round {
     
     public boolean tableChanged() {
         return table.tableChanged();
+    }
+    
+    public RoundArchiveItem getArchivedRound() {
+        if (table != null){
+            return new RoundArchiveItem(id, table.createArchive() , results);
+        }
+        return new RoundArchiveItem(id, null, null);
     }
     
 }

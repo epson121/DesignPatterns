@@ -1,5 +1,6 @@
 package lurajcevi_zadaca_2.state;
 
+import lurajcevi_zadaca_2.model.Season;
 import lurajcevi_zadaca_2.model.SportsClub;
 
 /**
@@ -17,32 +18,33 @@ public class WeakCompetitor implements SportsClubState {
     }
 
     @Override
-    public boolean canPlay() {
-        return false;
-    }
-
-    @Override
     public void positionLoss() {
-        if (weakCounter == 0) {
-            this.sportsClub.setState(sportsClub.getWeakCompetitor());
-        } else if (weakCounter == 3) {
+        weakCounter += 1;
+        if (weakCounter >= Season.threshold) {
+            System.out.println(this.sportsClub.getSportsClubName() + " is DISQUALIFIED.");
+            System.out.println(this.sportsClub.getPosition() + "  "
+                               + this.sportsClub.getSportsClubName() + "  "
+                               + this.sportsClub.getPoints());
             this.sportsClub.setState(sportsClub.getDisqualified());
-
-        } else {
-            weakCounter += 1;
+            this.sportsClub.unsubscribe();
         }
     }
 
     @Override
     public void positionGain() {
-        if (this.sportsClub.getState() instanceof WeakCompetitor) {
-            this.sportsClub.setState(sportsClub.getCompetitor());
-            weakCounter = 0;
-        }
+        System.out.println(this.sportsClub.getSportsClubName() + " went from"
+                           + "being WEAK COMPETITOR to being COMPETITOR.");
+        this.sportsClub.setState(sportsClub.getCompetitor());
+        weakCounter = 0;
     }
 
     @Override
     public void samePosition() {
         weakCounter += 1;
+        if (weakCounter >= Season.threshold) {
+            System.out.println(this.sportsClub.getSportsClubName() + " is DISQUALIFIED.");
+            this.sportsClub.setState(sportsClub.getDisqualified());
+            this.sportsClub.unsubscribe();
+        } 
     }
 }

@@ -13,11 +13,6 @@ public class Disqualified implements SportsClubState {
     public Disqualified(SportsClub sportsClub) {
         this.sportsClub = sportsClub;
     }
-    
-    @Override
-    public boolean canPlay() {
-        return false;
-    }
 
     @Override
     public void positionLoss() {

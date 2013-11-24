@@ -13,5 +13,4 @@ public interface SportsClubState {
     public void positionLoss();
     public void positionGain();
     public void samePosition();
-    public boolean canPlay();
 }

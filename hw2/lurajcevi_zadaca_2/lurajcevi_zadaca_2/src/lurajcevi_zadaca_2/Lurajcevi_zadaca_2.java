@@ -57,12 +57,10 @@ public class Lurajcevi_zadaca_2 {
             // save clubs to initial table
             //initialTable = new Table(clubs);
             // start the season with initial table
-            // TODO check if numbers (args 1-3)
             season.start();
             in.close();
         } catch (Exception e) {
-            //TODO print normal error message
-            e.printStackTrace();
+            System.out.println("Error occured. Don't know why.");
         }
     }
 }

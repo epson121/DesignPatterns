@@ -15,12 +15,9 @@ public class Competitor implements SportsClubState {
     }
 
     @Override
-    public boolean canPlay() {
-        return true;
-    }
-
-    @Override
     public void positionLoss() {
+        System.out.println(sportsClub.getSportsClubName()
+                           + " went from being COMPETITOR to being WEAK COMPETITOR.");
         this.sportsClub.setState(sportsClub.getWeakCompetitor());
     }
 
