@@ -2,7 +2,6 @@
 package lurajcevi_zadaca_2.model;
 
 import java.util.List;
-import lurajcevi_zadaca_2.archive.RoundArchiveItem;
 
 /**
  *
@@ -52,12 +51,12 @@ public class Round {
     public boolean tableChanged() {
         return table.tableChanged();
     }
-    
+
     public RoundArchiveItem getArchivedRound() {
         if (table != null){
             return new RoundArchiveItem(id, table.createArchive() , results);
         }
         return new RoundArchiveItem(id, null, null);
     }
-    
+   
 }

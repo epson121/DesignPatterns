@@ -1,4 +1,4 @@
-package lurajcevi_zadaca_2.archive;
+package lurajcevi_zadaca_2.model;
 
 /**
  *

@@ -2,7 +2,6 @@ package lurajcevi_zadaca_2.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import lurajcevi_zadaca_2.archive.RoundArchiveItem;
 
 /**
  *
@@ -18,7 +17,7 @@ public class SeasonRounds {
         this.roundCount = 0;
     }
 
-    public void addRound(RoundArchiveItem round) {
+    public void saveRound(RoundArchiveItem round) {
         seasonRounds.add(round);
         roundCount += 1;
     }

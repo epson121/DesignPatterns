@@ -3,8 +3,6 @@ package lurajcevi_zadaca_2.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import lurajcevi_zadaca_2.archive.RoundArchiveItem;
-import lurajcevi_zadaca_2.archive.TableArchiveItem;
 import lurajcevi_zadaca_2.command.Command;
 import lurajcevi_zadaca_2.observer.Observer;
 import lurajcevi_zadaca_2.observer.Subject;
@@ -46,25 +44,26 @@ public class Season extends Thread implements Subject {
             try {
                 start = System.currentTimeMillis();
                 System.out.println("ROUND " + Season.roundId);
+                // add initial table to control tables
                 if (controlSeasonRounds.getRoundCount() == 0) {
                     Table t = new  Table(getSportsClubList());
-                    controlSeasonRounds.addRound(
+                    controlSeasonRounds.saveRound(
                             new RoundArchiveItem(0, t.createArchive(), null));
                 }
                 Round round = new Round(Season.roundId,
                                   getSportsClubList(),
                                   this.generateRoundResults(Season.roundId));
-                
+                //round.saveToMemento();
                 round.printResults();
                 round.printTable();
                 if (round.getTable() != null) {
-                    seasonRounds.addRound(round.getArchivedRound());
+                    seasonRounds.saveRound(round.getArchivedRound());
                 }
                 notifyForEfficiency();
                 controlIntervalCounter += 1;
                 if (controlIntervalCounter == controlInterval) {
                     controlIntervalCounter = 0;
-                    controlSeasonRounds.addRound(round.getArchivedRound());
+                    controlSeasonRounds.saveRound(round.getArchivedRound());
                     updateClubStatus();
                 }
                 Season.roundId += 1;
@@ -159,8 +158,10 @@ public class Season extends Thread implements Subject {
             SportsClub s = (SportsClub) o;
             int points = s.getPoints();
             int rounds = s.getRoundsPlayedList().size();
-            if (rounds != 0)
-                s.notifyForEfficiency((double) points/rounds);
+            double efficiency = (double) points/rounds;
+            // notify only on change
+            if (efficiency != s.getEfficiency() && rounds != 0)
+                s.notifyForEfficiency(efficiency);
         }
     }
 

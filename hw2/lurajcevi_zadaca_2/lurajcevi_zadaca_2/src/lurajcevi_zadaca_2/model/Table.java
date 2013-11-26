@@ -1,6 +1,5 @@
 package lurajcevi_zadaca_2.model;
 
-import lurajcevi_zadaca_2.archive.TableArchiveItem;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
