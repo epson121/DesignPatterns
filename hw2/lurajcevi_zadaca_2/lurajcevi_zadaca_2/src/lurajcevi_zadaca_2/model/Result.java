@@ -21,7 +21,7 @@ public class Result {
         this.firstClub = firstClub;
         this.secondClub = secondClub;
         this.roundId = roundId;
-        this.playMatch();
+        playMatch();
     }
     
     /**
@@ -32,26 +32,36 @@ public class Result {
         firstClubScore = rand.nextInt(5);
         secondClubScore = rand.nextInt(5);
         if (firstClubScore > secondClubScore) {
-            this.winner = 1;
-            this.firstClub.updatePoints(3);
+            winner = 1;
+            firstClub.updatePoints(3);
         } else if (firstClubScore < secondClubScore) {
-            this.winner = 2;
-            this.secondClub.updatePoints(3);
+            winner = 2;
+            secondClub.updatePoints(3);
         } else {
-            this.winner = 0;
-            this.firstClub.updatePoints(1);
-            this.secondClub.updatePoints(1);
+            winner = 0;
+            firstClub.updatePoints(1);
+            secondClub.updatePoints(1);
         }
-        this.firstClub.addRoundPlayed(roundId);
-        this.secondClub.addRoundPlayed(roundId);
+        firstClub.addRoundPlayed(roundId);
+        secondClub.addRoundPlayed(roundId);
     }
     
+    /**
+     * Print out the result
+     */
     public void printResult() {
         System.out.println(firstClub.getSportsClubName() + " : " 
                            + secondClub.getSportsClubName() + " " 
-                           + firstClubScore + " : " + secondClubScore);
+                           + firstClubScore + " : " + secondClubScore + "  "
+                           + winner);
     }
-
+    
+    /*
+     * 
+     * GETTERS AND SETTERS
+     * 
+     */
+    
     public SportsClub getFirstClub() {
         return firstClub;
     }
