@@ -1,6 +1,7 @@
 package lurajcevi_zadaca_2.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -29,10 +30,35 @@ public class SeasonRounds {
     public int getRoundCount() {
         return roundCount;
     }
-    
+
     public RoundArchiveItem getSeasonRound(int id) {
         return seasonRounds.get(id);
     }
 
-    
+    public Iterator<RoundArchiveItem> iterator() {
+        return new RoundArchiveItemIterator();
+    }
+
+    class RoundArchiveItemIterator implements Iterator<RoundArchiveItem> {
+
+        int currentIndex = 0;
+
+        public boolean hasNext() {
+            if (currentIndex >= seasonRounds.size()) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        public RoundArchiveItem next() {
+            return seasonRounds.get(currentIndex++);
+        }
+
+        @Override
+        public void remove() {
+            // do not implement delete
+        }
+
+    }
 }

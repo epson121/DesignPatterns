@@ -6,8 +6,6 @@ import lurajcevi_zadaca_2.command.Command;
 import lurajcevi_zadaca_2.command.PositionGain;
 import lurajcevi_zadaca_2.command.PositionLoss;
 import lurajcevi_zadaca_2.command.SamePosition;
-import lurajcevi_zadaca_2.model.Result;
-import lurajcevi_zadaca_2.model.SportsClub;
 
 /**
  *
@@ -60,6 +58,32 @@ public class RoundArchiveItem {
             }
         }
         return result;
+    }
+    
+    public void printTable() {
+        if (tableList == null){
+            System.out.println("Table was not saved.");
+        }
+        System.out.println("ID: " + roundId);
+        for (TableArchiveItem ta : tableList) {
+            ta.printItem();
+        }
+    }
+    
+    public void printResults() {
+        for (Result r : resultList) {
+            r.printResult();
+        }
+    }
+    
+    public void printResultFromSpecificClub(int id) {
+        for(Result r : resultList) {
+            int fcId = r.getFirstClub().getSportsClubId();
+            int scId = r.getSecondClub().getSportsClubId();
+            if (id == fcId || id == scId) {
+                r.printResult();
+            }
+        }
     }
     
 }

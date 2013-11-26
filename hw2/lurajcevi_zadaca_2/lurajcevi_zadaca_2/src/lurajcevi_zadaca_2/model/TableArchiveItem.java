@@ -31,5 +31,9 @@ public class TableArchiveItem {
     public String getName() {
         return name;
     }
+    
+    public void printItem() {
+        System.out.println(position + " " + name + " " + points);
+    }
 
 }

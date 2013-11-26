@@ -56,7 +56,7 @@ public class Round {
         if (table != null){
             return new RoundArchiveItem(id, table.createArchive() , results);
         }
-        return new RoundArchiveItem(id, null, null);
+        return new RoundArchiveItem(id, null, results);
     }
    
 }
