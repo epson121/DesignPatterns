@@ -53,7 +53,7 @@ public class Result {
         System.out.println(firstClub.getSportsClubName() + " : " 
                            + secondClub.getSportsClubName() + " " 
                            + firstClubScore + " : " + secondClubScore + "  "
-                           + winner);
+                           + "(" + winner + ")");
     }
     
     /*

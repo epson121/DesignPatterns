@@ -2,10 +2,14 @@ package lurajcevi_zadaca_2.model;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 import lurajcevi_zadaca_2.command.Command;
 import lurajcevi_zadaca_2.observer.Observer;
 import lurajcevi_zadaca_2.observer.Subject;
@@ -33,7 +37,7 @@ public class Season extends Thread implements Subject, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyChar() == 'q') {
+        if (e.getKeyChar() == 's') {
             stopSeason = true;
         }
     }
@@ -60,27 +64,42 @@ public class Season extends Thread implements Subject, KeyListener {
         long start, duration = 0;
         while (getSportsClubList().size() > 2 && (stopSeason == false)) {
             try {
+                String s = new String();
+                BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+                try {
+                    if (bufferRead.ready()) {
+                        s = bufferRead.readLine();
+                    }
+                } catch (IOException ex) {
+                    System.out.println("Error occured.");
+                }
+
+                if (s.startsWith("s")) {
+                    break;
+                }
                 // TODO does not print when club is disqualified
                 start = System.currentTimeMillis();
                 System.out.println("ROUND " + Season.roundId);
+                // TODO tu kreirat tablicu!!
                 // add initial table to control tables
+                
+                List<Result> roundResults = this.generateRoundResults(Season.roundId);
+                Table t = new Table(getSportsClubList());
                 if (controlSeasonRounds.getRoundCount() == 0) {
-                    Table t = new Table(getSportsClubList());
                     controlSeasonRounds.saveRound(
                             new RoundArchiveItem(0, t.createArchive(), null));
                 }
                 Round round = new Round(Season.roundId,
-                        getSportsClubList(),
-                        this.generateRoundResults(Season.roundId));
-                //round.saveToMemento();
+                        t,
+                        roundResults);
                 round.printResults();
                 round.printTable();
                 seasonRounds.saveRound(round.getArchivedRound());
-                notifyForEfficiency();
+                //notifyObserver();
                 controlIntervalCounter += 1;
                 if (controlIntervalCounter == controlInterval) {
                     controlIntervalCounter = 0;
-                    controlSeasonRounds.saveRound(round.getArchivedRound());
+                    controlSeasonRounds.saveRound(new RoundArchiveItem(roundId, t.createArchive(), roundResults));
                     updateClubStatus();
                 }
                 Season.roundId += 1;
@@ -98,16 +117,48 @@ public class Season extends Thread implements Subject, KeyListener {
             }
 
         }
-        for (RoundArchiveItem rai : seasonRounds.getSeasonRounds()) {
-            System.out.println("ROUND : " + rai.getRoundId());
-            for (TableArchiveItem t : rai.getTableList()) {
-                System.out.println(t.getPosition() + "  "
-                        + t.getName() + "  " + t.getPoints());
+        seasonRounds.getSeasonRound(seasonRounds.getRoundCount() - 1).printTable();
+        printMenu();
+        String input = "";
+        String inputId = "";
+        Scanner sc = new Scanner(System.in);
+
+        while (!input.equals("q")) {
+            System.out.print(">> ");
+            input = sc.nextLine();
+            if ("q".equals(input)) {
+                break;
             }
-            for (Result r : rai.getResultList()) {
-                r.printResult();
+            switch (Integer.parseInt(input)) {
+                case 1:
+                    printAllArchivedTables();
+                    break;
+                case 2:
+                    System.out.println("Archive id: ");
+                    System.out.print(">> ");
+                    inputId = sc.nextLine();
+                    printSpecificTable(Integer.parseInt(inputId));
+                    break;
+                case 3:
+                    System.out.println("Archive id: ");
+                    System.out.print(">> ");
+                    inputId = sc.nextLine();
+                    printResultsOfSpecificTable(Integer.parseInt(inputId));
+                    break;
+                case 4:
+                    System.out.println("Club id: ");
+                    System.out.print(">> ");
+                    inputId = sc.nextLine();
+                    printResultsOfSpecificClub(Integer.parseInt(inputId));
+                    break;
+                case 5:
+                    printMenu();
+                    break;
+                default:
+                    System.out.println("Wrong number.");
             }
         }
+        
 
     }
 
@@ -150,7 +201,16 @@ public class Season extends Thread implements Subject, KeyListener {
 
     @Override
     public void notifyObserver() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         for (Observer o : observerList) {
+            SportsClub s = (SportsClub) o;
+            int points = s.getPoints();
+            int rounds = s.getRoundsPlayedList().size();
+            double efficiency = (double) points / rounds;
+            // notify only on change
+            if (efficiency != s.getEfficiency() && rounds != 0) {
+                o.updateEfficiency(efficiency);
+            }
+        }
     }
 
     private ArrayList<Observer> getCompetitors() {
@@ -170,19 +230,6 @@ public class Season extends Thread implements Subject, KeyListener {
         return result;
     }
 
-    private void notifyForEfficiency() {
-        for (Observer o : observerList) {
-            SportsClub s = (SportsClub) o;
-            int points = s.getPoints();
-            int rounds = s.getRoundsPlayedList().size();
-            double efficiency = (double) points / rounds;
-            // notify only on change
-            if (efficiency != s.getEfficiency() && rounds != 0) {
-                s.notifyForEfficiency(efficiency);
-            }
-        }
-    }
-
     private void updateClubStatus() {
         int length = controlSeasonRounds.getRoundCount();
         RoundArchiveItem newControlTable;
@@ -190,18 +237,13 @@ public class Season extends Thread implements Subject, KeyListener {
         if (length >= 2) {
             System.out.println("LENGTH: " + length);
             newControlTable = controlSeasonRounds.getSeasonRound(length - 2);
+            // newControlTable.printTable();
             tableChanges = newControlTable.tableDifference(getSportsClubList());
         }
         for (Command c : tableChanges) {
             c.execute();
         }
     }
-    /*
-     *  System.out.println("\n1.Print all archived tables");
-     System.out.println("\n2.Print a specific table (by id)");
-     System.out.println("\n3.Print results connected to the specific table");
-     System.out.println("\n4.Print results of a specific sports club");
-     */
 
     public void printAllArchivedTables() {
         Iterator<RoundArchiveItem> i = seasonRounds.iterator();
@@ -249,9 +291,20 @@ public class Season extends Thread implements Subject, KeyListener {
         Iterator<RoundArchiveItem> i = seasonRounds.iterator();
         while (i.hasNext()) {
             RoundArchiveItem r = i.next();
+            System.out.println("ROUND: " + r.getRoundId());
             if (selectedSportsClub.getRoundsPlayedList().contains(r.getRoundId())) {
                 r.printResultFromSpecificClub(id);
             }
         }
+    }
+    
+    public void printMenu() {
+        System.out.println("SEASON IS OVER!\n PLEASE CHOOSE ONE OF THE FOLLOWING");
+        System.out.println("\n1.Print all archived tables");
+        System.out.println("\n2.Print a specific table (by id)");
+        System.out.println("\n3.Print results connected to the specific table");
+        System.out.println("\n4.Print results of a specific sports club");
+        System.out.println("\nq to exit");
+        System.out.println("\nChoose wisely!");
     }
 }

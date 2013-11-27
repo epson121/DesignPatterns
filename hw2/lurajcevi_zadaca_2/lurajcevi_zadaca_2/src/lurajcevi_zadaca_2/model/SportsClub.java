@@ -26,6 +26,7 @@ public class SportsClub implements Comparable<SportsClub>, Observer {
     private SportsClubState disqualified;
     private Season season;
     private List<Integer> roundsPlayedList;
+    private int lastRoundPosition;
     // set starting state
     private SportsClubState state;
 
@@ -41,6 +42,7 @@ public class SportsClub implements Comparable<SportsClub>, Observer {
         this.sportsClubName = sportsClubName;
         this.points = 0;
         this.position = 1;
+        this.lastRoundPosition = 1;
         this.roundsPlayedList = new ArrayList<>();
         this.efficiency = 1.0;
         season.registerObserver(this);
@@ -62,6 +64,14 @@ public class SportsClub implements Comparable<SportsClub>, Observer {
         return points;
     }
 
+    public int getLastRoundPosition() {
+        return lastRoundPosition;
+    }
+
+    public void setLastRoundPosition(int lastRoundPosition) {
+        this.lastRoundPosition = lastRoundPosition;
+    }
+
     public void updatePoints(int points) {
         this.points += points;
     }
@@ -71,6 +81,7 @@ public class SportsClub implements Comparable<SportsClub>, Observer {
     }
 
     public void setPosition(int position) {
+        setLastRoundPosition(this.position);
         this.position = position;
     }
 
@@ -117,16 +128,6 @@ public class SportsClub implements Comparable<SportsClub>, Observer {
         return efficiency;
     }
 
-    public void notifyForEfficiency(double efficiency) {
-        if (this.efficiency != efficiency) {
-            DecimalFormat df = new DecimalFormat("#.##");
-            System.out.println("Change in efficiency:");
-            System.out.println(this.sportsClubName + " went from "
-                    + df.format(this.efficiency) + " to "
-                    + df.format(efficiency));
-            this.efficiency = efficiency;
-        }
-    }
 
     public void positionLoss() {
         state.positionLoss();
@@ -142,6 +143,18 @@ public class SportsClub implements Comparable<SportsClub>, Observer {
     
     public void unsubscribe() {
         season.removeObserver(this);
+    }
+
+    @Override
+    public void updateEfficiency(double efficiency) {
+         if (this.efficiency != efficiency) {
+            DecimalFormat df = new DecimalFormat("#.##");
+            System.out.println("Change in efficiency:");
+            System.out.println(this.sportsClubName + " went from "
+                    + df.format(this.efficiency) + " to "
+                    + df.format(efficiency));
+            this.efficiency = efficiency;
+        }
     }
     
 }

@@ -13,11 +13,12 @@ public class Round {
     private Table table = null;
     private List<Result> results;
 
-    public Round(int id, List<SportsClub> sportsClubList, List<Result> results) {
+    public Round(int id, Table table, List<Result> results) {
         this.id = id;
-        this.table = new Table(sportsClubList);
-        if (table.getSportsClubList() == null) {
-                this.table = null;
+        if (!table.tableChanged()) {
+            this.table = null;
+        } else {
+            this.table = table;
         }
         this.results = results;
     }

@@ -22,12 +22,16 @@ public class WeakCompetitor implements SportsClubState {
         weakCounter += 1;
         if (weakCounter >= Season.threshold) {
             System.out.println(this.sportsClub.getSportsClubName() + " is DISQUALIFIED.");
-            System.out.println(this.sportsClub.getPosition() + "  "
+            printInfo();
+        }
+    }
+    
+    private void printInfo() {
+        System.out.println(this.sportsClub.getPosition() + "  "
                                + this.sportsClub.getSportsClubName() + "  "
                                + this.sportsClub.getPoints());
             this.sportsClub.setState(sportsClub.getDisqualified());
             this.sportsClub.unsubscribe();
-        }
     }
 
     @Override
@@ -43,6 +47,7 @@ public class WeakCompetitor implements SportsClubState {
         weakCounter += 1;
         if (weakCounter >= Season.threshold) {
             System.out.println(this.sportsClub.getSportsClubName() + " is DISQUALIFIED.");
+            printInfo();
             this.sportsClub.setState(sportsClub.getDisqualified());
             this.sportsClub.unsubscribe();
         } 

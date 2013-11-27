@@ -36,13 +36,19 @@ public class RoundArchiveItem {
     }
     
     public List<Command> tableDifference(List<SportsClub> sportsClubList) {
+        List<TableArchiveItem> tl;
+        if (this.tableList == null) {
+            
+        } else {
+            
+        }
         List<Command> result = new ArrayList<>();
         for (SportsClub scf : sportsClubList) {
             int firstClubId = scf.getSportsClubId();
             int positionNow = scf.getPosition();
             for (TableArchiveItem tai : this.tableList) {
-                int positionBefore = tai.getPosition();
                 if (tai.getId() == firstClubId) {
+                    int positionBefore = tai.getPosition();
                     System.out.println(scf.getSportsClubName() + " was " + 
                                            positionBefore + " and now is " + 
                                            positionNow);
@@ -61,12 +67,13 @@ public class RoundArchiveItem {
     }
     
     public void printTable() {
-        if (tableList == null){
+        try {
+            System.out.println("ID: " + roundId);
+            for (TableArchiveItem ta : tableList) {
+                ta.printItem();
+            }
+        } catch (Exception e) {
             System.out.println("Table was not saved.");
-        }
-        System.out.println("ID: " + roundId);
-        for (TableArchiveItem ta : tableList) {
-            ta.printItem();
         }
     }
     
@@ -77,12 +84,24 @@ public class RoundArchiveItem {
     }
     
     public void printResultFromSpecificClub(int id) {
+        int fcId;
+        int scId;
+        boolean found = false;
         for(Result r : resultList) {
-            int fcId = r.getFirstClub().getSportsClubId();
-            int scId = r.getSecondClub().getSportsClubId();
-            if (id == fcId || id == scId) {
-                r.printResult();
+            try {
+                fcId = r.getFirstClub().getSportsClubId();
+                scId = r.getSecondClub().getSportsClubId();
+                if (id == fcId || id == scId) {
+                    found = true;
+                    r.printResult();
+                }
+            } catch(Exception e) {
+                continue;
             }
+        }
+        //System.out.println(found);
+        if (found == false) {
+            System.out.println("Club paused this round.");
         }
     }
     

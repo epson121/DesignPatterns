@@ -11,3 +11,7 @@ Homework 1:
 
 Homework 2:
 *  Sports simulation
+ * Simulation of a sport competition with clubs given as a txt file
+ * Loading of clubs, creating tables, generating results, keeping track of efficiency
+ * Clubs can be in different states (competitor, weak competitor and disqualified)
+ * Design patterns used: State, Observer, Command and Memento (version with a public class in the same package, without undo)

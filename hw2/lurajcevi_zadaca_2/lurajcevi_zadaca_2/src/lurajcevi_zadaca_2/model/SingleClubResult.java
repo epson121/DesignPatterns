@@ -6,19 +6,15 @@ package lurajcevi_zadaca_2.model;
  * @author luka
  */
 public class SingleClubResult extends Result {
-    private final SportsClub sc;
+    private SportsClub firstClub;
     
     public SingleClubResult(SportsClub sc) {
-        this.sc = sc;
-    }
-
-    public SportsClub getSc() {
-        return sc;
+        this.firstClub = sc;
     }
 
     @Override
     public void printResult() {
-        System.out.println(sc.getSportsClubName() + " paused this round.");
+        System.out.println(firstClub.getSportsClubName() + " paused this round.");
     }
     
     

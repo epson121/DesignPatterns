@@ -22,15 +22,7 @@ public class Lurajcevi_zadaca_2 extends KeyAdapter {
 
     private static String sportsClubRegex = "^([1-9]{1}[0-9]{0,3})([a-zA-Z]{1,20})\\s*$";    
     
-    public static void printMenu() {
-        System.out.println("SEASON IS OVER!\n PLEASE CHOOSE ONE OF THE FOLLOWING");
-        System.out.println("\n1.Print all archived tables");
-        System.out.println("\n2.Print a specific table (by id)");
-        System.out.println("\n3.Print results connected to the specific table");
-        System.out.println("\n4.Print results of a specific sports club");
-        System.out.println("\nq to exit");
-        System.out.println("\nChoose wisely!");
-    }
+    
     /**
      * @param args the command line arguments
      */
@@ -66,30 +58,6 @@ public class Lurajcevi_zadaca_2 extends KeyAdapter {
             Season.allClubs = sp;
             season.start();
             in.close();
-            while (season.isAlive()) {}
-    
-            String input = "";
-            Scanner sc = new Scanner(System.in);
-
-            while (!input.equals("q")) {
-                System.out.print(">> ");
-                input = sc.nextLine();
-                if ("q".equals(input)) {
-                    break;
-                }
-                switch (Integer.parseInt(input)) {
-                    case 1:
-                        System.out.println("1");
-                    case 2:
-                        System.out.println("2");
-                    case 3:
-                        System.out.println("3");
-                    case 4:
-                        System.out.println("4");
-                    default:
-                        System.out.println("Wrong number.");
-                }
-            }
         } catch (Exception e) {
             System.out.println("Error occured. Don't know why.");
         }
