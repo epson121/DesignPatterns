@@ -13,7 +13,10 @@ public class SamePosition implements Command {
     public SamePosition(SportsClub sportsClub) {
         this.sportsClub = sportsClub;
     }
-
+    
+    /**
+     * Execute command on a sportsclub when its position stays the same
+     */
     @Override
     public void execute() {
         sportsClub.samePosition();

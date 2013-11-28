@@ -16,7 +16,10 @@ public class WeakCompetitor implements SportsClubState {
         this.sportsClub = sportsClub;
         weakCounter = 0;
     }
-
+    
+    /**
+     * Do when a club loses a position
+     */
     @Override
     public void positionLoss() {
         weakCounter += 1;
@@ -26,6 +29,9 @@ public class WeakCompetitor implements SportsClubState {
         }
     }
     
+    /**
+     * Print club info, helper function
+     */
     private void printInfo() {
         System.out.println(this.sportsClub.getPosition() + "  "
                                + this.sportsClub.getSportsClubName() + "  "
@@ -33,15 +39,21 @@ public class WeakCompetitor implements SportsClubState {
             this.sportsClub.setState(sportsClub.getDisqualified());
             this.sportsClub.unsubscribe();
     }
-
+    
+    /**
+     * Do when a club gains a position
+     */
     @Override
     public void positionGain() {
         System.out.println(this.sportsClub.getSportsClubName() + " went from"
-                           + "being WEAK COMPETITOR to being COMPETITOR.");
+                           + " being WEAK COMPETITOR to being COMPETITOR.");
         this.sportsClub.setState(sportsClub.getCompetitor());
         weakCounter = 0;
     }
-
+    
+    /**
+     * Do when club does not change position
+     */
     @Override
     public void samePosition() {
         weakCounter += 1;

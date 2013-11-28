@@ -9,7 +9,6 @@ package lurajcevi_zadaca_2.state;
  * @author luka
  */
 public interface SportsClubState {
-    
     public void positionLoss();
     public void positionGain();
     public void samePosition();

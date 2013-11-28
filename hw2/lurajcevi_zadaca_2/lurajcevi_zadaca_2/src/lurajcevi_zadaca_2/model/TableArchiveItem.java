@@ -32,6 +32,9 @@ public class TableArchiveItem {
         return name;
     }
     
+    /**
+     * Print table archive item
+     */
     public void printItem() {
         System.out.println(position + " " + name + " " + points);
     }

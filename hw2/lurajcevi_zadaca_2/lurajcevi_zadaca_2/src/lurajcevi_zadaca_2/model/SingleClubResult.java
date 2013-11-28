@@ -11,7 +11,10 @@ public class SingleClubResult extends Result {
     public SingleClubResult(SportsClub sc) {
         this.firstClub = sc;
     }
-
+    
+    /**
+     * Print "result" of a SingleClub (the one who paused)
+     */
     @Override
     public void printResult() {
         System.out.println(firstClub.getSportsClubName() + " paused this round.");

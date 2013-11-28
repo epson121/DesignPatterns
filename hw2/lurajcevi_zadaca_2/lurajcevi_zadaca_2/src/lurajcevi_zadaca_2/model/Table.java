@@ -11,7 +11,6 @@ import java.util.List;
 public class Table {
 
     private List<SportsClub> sportsClubList;
-    private static List<SportsClub> oldTable = null;
     private List<TableArchiveItem> tableArchive;
     public static List<TableArchiveItem> oldTableArchive = null;
 
@@ -19,7 +18,11 @@ public class Table {
         this.sportsClubList = sportsClubList;
         generateTable();
     }
-
+    
+    /**
+     * Generate table for the new round.
+     * Sort the clubs by their points. Update their positions.
+     */
     private void generateTable() {
         Collections.sort(this.sportsClubList);
         int currentPoints = this.sportsClubList.get(0).getPoints();
@@ -27,14 +30,10 @@ public class Table {
         for (int i = 0; i < this.sportsClubList.size(); i++) {
             int nextClubPoints = this.sportsClubList.get(i).getPoints();
             if (nextClubPoints == currentPoints) {
-                System.out.println("Postavi " + this.sportsClubList.get(i).getSportsClubName() + 
-                        " na " + currentPosition);
                 this.sportsClubList.get(i).setPosition(currentPosition);
             } else {
                 currentPoints = nextClubPoints;
                 currentPosition = i+1;
-                System.out.println("Postavi " + this.sportsClubList.get(i).getSportsClubName() + 
-                        " na " + currentPosition);
                 this.sportsClubList.get(i).setPosition(currentPosition);
             }
         }
@@ -44,6 +43,10 @@ public class Table {
         return sportsClubList;
     }
     
+    /**
+     * Create archive of the newly created table
+     * @return 
+     */
     public List<TableArchiveItem> createArchive() {
         if (sportsClubList == null) {
             tableArchive = null;
@@ -52,19 +55,24 @@ public class Table {
         for (SportsClub sc : sportsClubList) {
             tableArchive.add(new TableArchiveItem(sc.getPosition(), sc.getPoints(),
                                          sc.getSportsClubId(), sc.getSportsClubName()));
-            /*oldTableArchive.add(new TableArchiveItem(sc.getPosition(), sc.getPoints(),
-                                         sc.getSportsClubId(), sc.getSportsClubName()));*/
         }
         return tableArchive;
     }
-
+    
+    /**
+     * Print newly created table
+     */
     public void printTable() {
         for (SportsClub sc : this.sportsClubList) {
             System.out.println(sc.getPosition() + " " + sc.getSportsClubName()
                     + " " + sc.getPoints());
         }
     }
-
+    
+    /**
+     * Check if table was changed (from the last round)
+     * @return 
+     */
     public boolean tableChanged() {
         if (Table.oldTableArchive == null) {
             Table.oldTableArchive = new ArrayList<>(createArchive());
@@ -73,8 +81,6 @@ public class Table {
             for (int i = 0; i < sportsClubList.size(); i++) {
                 SportsClub scf = sportsClubList.get(i);
                 TableArchiveItem ta = Table.oldTableArchive.get(i);
-                System.out.println("First: " + scf.getSportsClubName() + " " + scf.getPosition());
-                System.out.println("Second : " + ta.getName() + " " + ta.getPosition());
                 if (scf.getSportsClubId() == ta.getId()) {
                     if (scf.getPosition() != ta.getPosition()) {
                         Table.oldTableArchive = new ArrayList<>(createArchive());

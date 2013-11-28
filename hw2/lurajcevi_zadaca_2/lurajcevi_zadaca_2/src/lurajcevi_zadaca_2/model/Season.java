@@ -1,7 +1,5 @@
 package lurajcevi_zadaca_2.model;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,7 +16,7 @@ import lurajcevi_zadaca_2.observer.Subject;
  *
  * @author luka
  */
-public class Season extends Thread implements Subject, KeyListener {
+public class Season extends Thread implements Subject {
     
     public static List<SportsClub> allClubs;
     private List<Observer> observerList = new ArrayList<>();
@@ -30,23 +28,12 @@ public class Season extends Thread implements Subject, KeyListener {
     public static int threshold;
     private boolean stopSeason = false;
     
-    @Override
-    public void keyTyped(KeyEvent e) {
-        // do nothing
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if (e.getKeyChar() == 's') {
-            stopSeason = true;
-        }
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        // do nothing
-    }
-
+    /**
+     * Creates new Season
+     * @param sleepInterval - thread sleep time
+     * @param controlInterval - occurence of a control interval
+     * @param threshold - maximum allowed rounds spent being weak competitor
+     */
     public Season(int sleepInterval, int controlInterval, int threshold) {
         this.sleepInterval = sleepInterval;
         this.controlInterval = controlInterval;
@@ -77,11 +64,9 @@ public class Season extends Thread implements Subject, KeyListener {
                 if (s.startsWith("s")) {
                     break;
                 }
-                // TODO does not print when club is disqualified
+
                 start = System.currentTimeMillis();
                 System.out.println("ROUND " + Season.roundId);
-                // TODO tu kreirat tablicu!!
-                // add initial table to control tables
                 
                 List<Result> roundResults = this.generateRoundResults(Season.roundId);
                 Table t = new Table(getSportsClubList());
@@ -95,7 +80,7 @@ public class Season extends Thread implements Subject, KeyListener {
                 round.printResults();
                 round.printTable();
                 seasonRounds.saveRound(round.getArchivedRound());
-                //notifyObserver();
+                notifyObserver();
                 controlIntervalCounter += 1;
                 if (controlIntervalCounter == controlInterval) {
                     controlIntervalCounter = 0;
@@ -166,9 +151,14 @@ public class Season extends Thread implements Subject, KeyListener {
     public void interrupt() {
         super.interrupt();
     }
-
+    
+    /**
+     * Generate results for new round (only from the
+     * clubs in observerList)
+     * @param roundId
+     * @return 
+     */
     public List<Result> generateRoundResults(int roundId) {
-        // only from the competitors
         ArrayList<Observer> sc = getCompetitors();
         List<Result> results = new ArrayList<>();
         while (sc.size() > 1) {
@@ -184,11 +174,7 @@ public class Season extends Thread implements Subject, KeyListener {
         }
         return results;
     }
-
-    public Table generateTable() {
-        return null;
-    }
-
+    
     @Override
     public void registerObserver(Observer o) {
         this.observerList.add(o);
@@ -198,7 +184,10 @@ public class Season extends Thread implements Subject, KeyListener {
     public void removeObserver(Observer o) {
         this.observerList.remove(o);
     }
-
+    
+    /**
+     * Notify clubs when their efficiency changes
+     */
     @Override
     public void notifyObserver() {
          for (Observer o : observerList) {
@@ -212,7 +201,11 @@ public class Season extends Thread implements Subject, KeyListener {
             }
         }
     }
-
+    
+    /**
+     * Get all clubs (as Observers) qualified for competing
+     * @return 
+     */
     private ArrayList<Observer> getCompetitors() {
         ArrayList<Observer> result = new ArrayList<>();
         for (Observer o : observerList) {
@@ -220,7 +213,12 @@ public class Season extends Thread implements Subject, KeyListener {
         }
         return result;
     }
-
+    
+    /**
+     * Get list of clubs (as SportsClub objects) qualified
+     * for competing
+     * @return 
+     */
     private List<SportsClub> getSportsClubList() {
         ArrayList<SportsClub> result = new ArrayList<>();
         for (Observer o : observerList) {
@@ -229,7 +227,10 @@ public class Season extends Thread implements Subject, KeyListener {
         }
         return result;
     }
-
+    
+    /**
+     * Update state of all clubs (send them a command)
+     */
     private void updateClubStatus() {
         int length = controlSeasonRounds.getRoundCount();
         RoundArchiveItem newControlTable;
@@ -237,14 +238,17 @@ public class Season extends Thread implements Subject, KeyListener {
         if (length >= 2) {
             System.out.println("LENGTH: " + length);
             newControlTable = controlSeasonRounds.getSeasonRound(length - 2);
-            // newControlTable.printTable();
             tableChanges = newControlTable.tableDifference(getSportsClubList());
         }
         for (Command c : tableChanges) {
             c.execute();
         }
     }
-
+    
+    /**
+     * Method for printing all archived tables (after the 
+     * thread finishes)
+     */
     public void printAllArchivedTables() {
         Iterator<RoundArchiveItem> i = seasonRounds.iterator();
         while (i.hasNext()) {
@@ -254,7 +258,11 @@ public class Season extends Thread implements Subject, KeyListener {
             }
         }
     }
-
+    
+    /**
+     * Print specific archived table based on its id
+     * @param id 
+     */
     public void printSpecificTable(int id) {
         Iterator<RoundArchiveItem> i = seasonRounds.iterator();
         while (i.hasNext()) {
@@ -265,7 +273,11 @@ public class Season extends Thread implements Subject, KeyListener {
             }
         }
     }
-
+    
+    /**
+     * Prints results of a specific archived round based on id
+     * @param id 
+     */
     public void printResultsOfSpecificTable(int id) {
         Iterator<RoundArchiveItem> i = seasonRounds.iterator();
         while (i.hasNext()) {
@@ -277,6 +289,11 @@ public class Season extends Thread implements Subject, KeyListener {
         }
     }
     
+    /**
+     * Prints results of specific club based on its id
+     * Results include all rounds where this club has played
+     * @param id 
+     */
     public void printResultsOfSpecificClub(int id) {
         SportsClub selectedSportsClub = null;
         //get reference to sports club
@@ -291,20 +308,22 @@ public class Season extends Thread implements Subject, KeyListener {
         Iterator<RoundArchiveItem> i = seasonRounds.iterator();
         while (i.hasNext()) {
             RoundArchiveItem r = i.next();
-            System.out.println("ROUND: " + r.getRoundId());
             if (selectedSportsClub.getRoundsPlayedList().contains(r.getRoundId())) {
                 r.printResultFromSpecificClub(id);
             }
         }
     }
     
+    /**
+     * Menu (After the thread exits, or is stopped)
+     */
     public void printMenu() {
         System.out.println("SEASON IS OVER!\n PLEASE CHOOSE ONE OF THE FOLLOWING");
-        System.out.println("\n1.Print all archived tables");
-        System.out.println("\n2.Print a specific table (by id)");
-        System.out.println("\n3.Print results connected to the specific table");
-        System.out.println("\n4.Print results of a specific sports club");
-        System.out.println("\nq to exit");
-        System.out.println("\nChoose wisely!");
+        System.out.println("1.Print all archived tables");
+        System.out.println("2.Print a specific table (by id)");
+        System.out.println("3.Print results connected to the specific table");
+        System.out.println("4.Print results of a specific sports club");
+        System.out.println("q to exit");
+        System.out.println("Choose wisely!");
     }
 }

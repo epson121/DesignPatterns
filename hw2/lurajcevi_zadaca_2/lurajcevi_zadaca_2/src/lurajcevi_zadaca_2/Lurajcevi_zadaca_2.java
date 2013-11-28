@@ -7,7 +7,6 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lurajcevi_zadaca_2.model.Season;
@@ -59,7 +58,7 @@ public class Lurajcevi_zadaca_2 extends KeyAdapter {
             season.start();
             in.close();
         } catch (Exception e) {
-            System.out.println("Error occured. Don't know why.");
+            System.out.println("Error occured.");
         }
     }
 }

@@ -15,6 +15,9 @@ public class PositionGain implements Command {
         this.sportsClub = sportsClub;
     }
     
+    /**
+     * Execute command on a sportsclub when it gains a position
+     */
     @Override
     public void execute() {
         sportsClub.positionGain();

@@ -13,7 +13,10 @@ public class Competitor implements SportsClubState {
     public Competitor(SportsClub sportsClub) {
         this.sportsClub = sportsClub;
     }
-
+    
+    /**
+     * change state if club loses a position while being competitor
+     */
     @Override
     public void positionLoss() {
         System.out.println(sportsClub.getSportsClubName()

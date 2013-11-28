@@ -15,6 +15,7 @@ public class Result {
     private int roundId;
     private Random rand = new Random();
     
+    // needed for SingleClubResult class
     public Result(){}
     
     public Result(SportsClub firstClub, SportsClub secondClub, int roundId) {

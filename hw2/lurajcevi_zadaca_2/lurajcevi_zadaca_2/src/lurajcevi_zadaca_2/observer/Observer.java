@@ -9,5 +9,5 @@ package lurajcevi_zadaca_2.observer;
  * @author luka
  */
 public interface Observer {
-    public void updateEfficiency(double efficiencys);
+    public void updateEfficiency(double efficiency);
 }

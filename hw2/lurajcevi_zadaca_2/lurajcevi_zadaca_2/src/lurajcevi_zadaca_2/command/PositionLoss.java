@@ -13,7 +13,10 @@ public class PositionLoss implements Command {
     public PositionLoss(SportsClub sportsClub) {
         this.sportsClub = sportsClub;
     }
-
+    
+    /**
+     * Execute command on a sportsclub when it loses a position
+     */
     @Override
     public void execute() {
         sportsClub.positionLoss();
