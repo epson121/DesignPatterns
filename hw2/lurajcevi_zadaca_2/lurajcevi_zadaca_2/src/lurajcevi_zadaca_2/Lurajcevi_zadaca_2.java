@@ -1,6 +1,5 @@
 package lurajcevi_zadaca_2;
 
-import java.awt.event.KeyAdapter;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
@@ -17,9 +16,9 @@ import lurajcevi_zadaca_2.model.SportsClub;
  *
  * @author luka
  */
-public class Lurajcevi_zadaca_2 extends KeyAdapter {
+public class Lurajcevi_zadaca_2 {
 
-    private static String sportsClubRegex = "^([1-9]{1}[0-9]{0,3})([a-zA-Z]{1,20})\\s*$";    
+    private static String sportsClubRegex = "^([1-9]{1}[0-9]{0,3})([a-zA-Z]{1,20})\\s*$";
     
     
     /**
@@ -44,7 +43,7 @@ public class Lurajcevi_zadaca_2 extends KeyAdapter {
                                        Integer.parseInt(args[2]),
                                        Integer.parseInt(args[3]));
             while ((strLine = br.readLine()) != null) {
-                m = p.matcher(strLine);
+                m = p.matcher(strLine.trim());
                 if (m.matches()) {
                     sp.add(new SportsClub(Integer.parseInt(m.group(1)),
                                                     m.group(2), 
