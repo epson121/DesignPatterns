@@ -142,12 +142,16 @@ public class SportsClub implements Comparable<SportsClub>, Observer {
     public void addRoundPlayed(int roundPlayedId) {
         this.roundsPlayedList.add(roundPlayedId);
     }
-
+    
     public double getEfficiency() {
         return efficiency;
     }
 
-
+    
+    /**
+     * Methods from Command pattern
+     */
+    
     public void positionLoss() {
         state.positionLoss();
     }
@@ -160,6 +164,10 @@ public class SportsClub implements Comparable<SportsClub>, Observer {
         state.samePosition();
     }
     
+    
+    /**
+     * Unsubscribe from observer
+     */
     public void unsubscribe() {
         season.removeObserver(this);
     }
