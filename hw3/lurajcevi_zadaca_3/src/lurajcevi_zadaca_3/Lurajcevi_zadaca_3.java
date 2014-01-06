@@ -18,7 +18,7 @@ public class Lurajcevi_zadaca_3 {
         if (args.length != 2) {
             System.out.println("2 arguments must be given.");
         } else {
-            UrlContentModel model = new UrlContentModel(args[0]);
+            UrlContentModel model = new UrlContentModel(args[0], Integer.parseInt(args[1]));
             UrlContentView view = new UrlContentView();
             UrlContentController controller = new UrlContentController(model, 
                                                                        view, 

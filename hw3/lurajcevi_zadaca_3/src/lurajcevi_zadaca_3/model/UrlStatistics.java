@@ -22,5 +22,13 @@ public class UrlStatistics {
         this.contentChangedCount = contentChangedCount;
     }
     
+    public void print() {
+        System.out.println("Url: " + urlLink);
+        System.out.println("Total time: " + totalTimeElapsed);
+        System.out.println("Number of manual reloads: " + manualReloadsCount);
+        System.out.println("Number of automatic reloads: " + automatedReloadsCount);
+        System.out.println("Number of content changes: " + contentChangedCount);
+    }
+    
     
 }

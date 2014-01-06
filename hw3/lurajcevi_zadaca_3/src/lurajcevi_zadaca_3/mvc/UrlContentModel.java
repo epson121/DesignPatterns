@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import lurajcevi_zadaca_3.model.UrlStatistics;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -19,18 +18,20 @@ public class UrlContentModel {
     
     private Document doc;
     private Elements urlLinks;
-    private UrlStatistics urlStatistics;
     
     // model data
     private String url;
     private int manualReloadCount;
     private int automaticReloadCount;
     private int contentChangeCount;
+    private int totalTimeElapsed;
+    private int interval;
+    
     /**
      * Load a page from string URL
      * @param url 
      */
-    public UrlContentModel(String url) {
+    public UrlContentModel(String url, int interval) {
         System.out.println(url);
         this.url = url;
         try {
@@ -39,6 +40,8 @@ public class UrlContentModel {
             manualReloadCount = 0;
             automaticReloadCount = 0;
             contentChangeCount = 0;
+            this.interval = interval;
+            this.totalTimeElapsed = 0;
         } catch (IOException ex) {
             Logger.getLogger(UrlContentModel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -52,11 +55,11 @@ public class UrlContentModel {
         return urlLinks.size();
     }
     
-    public Element getElement(int id) {
-        return urlLinks.get(id);
+    public String getElement(int id) {
+        return urlLinks.get(id).attr("href");
     }
     
-    public void reloadPage() {
+    public void reloadPage(boolean isManual) {
         try {
             Document tempDoc = Jsoup.connect(url).get();
             Elements tempElements = tempDoc.select("a[href]");
@@ -67,7 +70,12 @@ public class UrlContentModel {
                 updateContentChangeCount();
             }
             this.urlLinks = tempElements;
-            
+            if (isManual) {
+                updateManualReloadCount();
+            } else {
+                updateAutomaticReloadCount();
+            }
+            updateTotalTimeElapsed(interval);
         } catch (IOException ex) {
             Logger.getLogger(UrlContentModel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -94,36 +102,27 @@ public class UrlContentModel {
         return urlDetails;
     }
     
-    public Object saveToMemento(UrlStatistics statistics) {
+    public Object saveToMemento(UrlContentModel model) {
         System.out.println("Originator: Saving to Memento.");
-        nullifyValues();
-        return new Memento(statistics);
+        //nullifyValues();
+        return new Memento(model);
     }
     
+    /*
     private void nullifyValues() {
         setAutomaticReloadCount(0);
         setContentChangeCount(0);
         setManualReloadCount(0);
-    }
+    }*/
     
-    public void restoreFromMemento(Object m) {
+    public UrlContentModel restoreFromMemento(Object m) {
+        UrlContentModel model = null;
         if (m instanceof Memento) {
             Memento memento = (Memento) m;
-            urlStatistics = memento.getSavedState();
-            System.out.println("Originator: State after restoring from Memento: " + urlStatistics);
+            model = memento.getSavedState();
+            System.out.println("Originator: State after restoring from Memento: " + model);
         }
-    }
-    
-    private static class Memento {
-
-        private UrlStatistics statistics;
-            public Memento(UrlStatistics stateToSave) {
-            statistics = stateToSave;
-        }
-            
-        public UrlStatistics getSavedState() {
-            return statistics;
-        }
+        return model;
     }
 
     public String getUrl() {
@@ -168,6 +167,30 @@ public class UrlContentModel {
     
     public void updateContentChangeCount() {
         this.contentChangeCount += 1;
+    }
+
+    public int getTotalTimeElapsed() {
+        return totalTimeElapsed;
+    }
+
+    public void setTotalTimeElapsed(int totalTimeElapsed) {
+        this.totalTimeElapsed = totalTimeElapsed;
+    }
+    
+    public void updateTotalTimeElapsed(int amount) {
+        this.totalTimeElapsed += amount;
+    }
+    
+    private static class Memento {
+
+        private UrlContentModel model;
+            public Memento(UrlContentModel stateToSave) {
+            model = stateToSave;
+        }
+
+        public UrlContentModel getSavedState() {
+            return model;
+        }
     }
     
 }

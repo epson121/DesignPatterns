@@ -4,6 +4,7 @@ package lurajcevi_zadaca_3.mvc;
 import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.Map;
+import lurajcevi_zadaca_3.model.UrlStatistics;
 
 /**
  *
@@ -28,8 +29,8 @@ public class UrlContentView {
         }
     }
     
-    public void printUrlStatistics() {
-        
+    public void printUrlStatistics(UrlStatistics us) {
+        us.print();
     }
     
     public void printUrlHrefCount(int hrefCount) {
@@ -39,5 +40,16 @@ public class UrlContentView {
     public void printMenu() {
          System.out.println(menu);
     }
+    
+    public void printUrlDetails(String urlLink, int totalTimeElapsed, int manualReloadsCount,
+                                int automatedReloadsCount, int contentChangedCount) {
+
+        System.out.println("Url: " + urlLink);
+        System.out.println("Total time: " + totalTimeElapsed);
+        System.out.println("Number of manual reloads: " + manualReloadsCount);
+        System.out.println("Number of automatic reloads: " + automatedReloadsCount);
+        System.out.println("Number of content changes: " + contentChangedCount);
+    }
+    
     
 }
