@@ -74,8 +74,8 @@ public class UrlContentModel {
                 updateManualReloadCount();
             } else {
                 updateAutomaticReloadCount();
+                updateTotalTimeElapsed(interval);
             }
-            updateTotalTimeElapsed(interval);
         } catch (IOException ex) {
             Logger.getLogger(UrlContentModel.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -30,7 +30,7 @@ public class UrlContentController {
         this.model = model;
         this.view = view;
         view.printMenu();
-        addMemento(model.saveToMemento(model));
+        addMemento(this.model.saveToMemento(this.model));
         control();
     }
     
@@ -40,6 +40,7 @@ public class UrlContentController {
             @Override
             public void run() {
                 model.reloadPage(false);
+                time = System.currentTimeMillis();
             }
         };
     }
@@ -65,14 +66,17 @@ public class UrlContentController {
                         m = p.matcher(s);
                         if (m.matches()) {
                             int t = (int) ((System.currentTimeMillis() - time) / 1000);
-                            /*UrlStatistics stats 
-                                    = new UrlStatistics(model.getUrl(), t, 
-                                        model.getManualReloadCount(), model.getAutomaticReloadCount(),
-                                        model.getContentChangeCount());*/
                             model.updateTotalTimeElapsed(t);
-                            this.model = new UrlContentModel(model.getElement(Integer.parseInt(m.group(1))),
-                                                            refreshInterval);
-                            addMemento(model.saveToMemento(model));   
+                            String next = model.getElement(Integer.parseInt(m.group(1)));
+                            if (archivedModel(next) == null) {
+                                this.model = new UrlContentModel(next,
+                                                             refreshInterval);
+                                addMemento(model.saveToMemento(model));   
+                            } else {
+                                this.model = archivedModel(next);
+                            }
+                            
+                            
                             time = System.currentTimeMillis();
                             // start a new timer
                             timer.cancel();
@@ -103,6 +107,16 @@ public class UrlContentController {
                 e.printStackTrace();
             }
         }
+    }
+    
+    public UrlContentModel archivedModel(String next) {
+        for (int i = 0; i < savedStates.size(); i++) {
+            UrlContentModel tempModel = model.restoreFromMemento(getMemento(i));
+            if (tempModel.getUrl().equals(next)) {
+                return tempModel;
+            }
+        }
+        return null;
     }
     
     private void addMemento(Object m) {
