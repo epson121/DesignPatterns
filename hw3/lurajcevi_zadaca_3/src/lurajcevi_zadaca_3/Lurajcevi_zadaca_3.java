@@ -12,9 +12,12 @@ import lurajcevi_zadaca_3.mvc.UrlContentView;
  */
 public class Lurajcevi_zadaca_3 {
     
+    /**
+     * Entry point for the application, handles command line arguments
+     * @param args 
+     */
     public static void main(String[] args) {
-        // TODO value check (if string, and if int)
-        System.out.println(args.length);
+        try {
         if (args.length != 2) {
             System.out.println("2 arguments must be given.");
         } else {
@@ -23,7 +26,10 @@ public class Lurajcevi_zadaca_3 {
             UrlContentController controller = new UrlContentController(model, 
                                                                        view, 
                                                                        Integer.parseInt(args[1]));
-            //controller
+        }
+        } catch (Exception e) {
+            System.out.println("Wrong input. First argument is URL, and the "
+                             + "second one is a number.");
         }
     }
     
