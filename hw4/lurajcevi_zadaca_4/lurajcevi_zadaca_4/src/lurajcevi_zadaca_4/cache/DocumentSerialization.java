@@ -139,7 +139,8 @@ public class DocumentSerialization implements Serializable {
         double result = 0.0;
         for (LinkDocument d : DocumentSerialization.record) {
             File f = new File(Lurajcevi_zadaca_4.STORAGE + File.separator + d.getUrl().hashCode());
-            result += f.length();
+            if (!f.getName().equals("log.txt"))
+                result += f.length();
         }
         return result/1024;
     }
