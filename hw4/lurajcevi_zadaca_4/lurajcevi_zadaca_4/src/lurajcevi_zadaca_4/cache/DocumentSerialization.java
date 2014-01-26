@@ -135,8 +135,8 @@ public class DocumentSerialization implements Serializable {
      * Returns the storage size in KB
      * @return 
      */
-    public static int getStorageSize() {
-        int result = 0;
+    public static double getStorageSize() {
+        double result = 0.0;
         for (LinkDocument d : DocumentSerialization.record) {
             File f = new File(Lurajcevi_zadaca_4.STORAGE + File.separator + d.getUrl().hashCode());
             result += f.length();

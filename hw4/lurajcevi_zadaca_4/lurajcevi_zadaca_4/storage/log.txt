@@ -1,97 +1,55 @@
 Item added. TIME: 
-25.01.2014 19:56:53
+26.01.2014 12:04:27
 URL: http://localhost/index.html
-Time added: 10.10.46038 14:05:38
-Last used: 10.10.46038 14:05:38
+Time added: 26.01.2014 12:04:26
+Last used: 26.01.2014 12:04:26
 Total time in storage: 0
 Number of uses: 1Item added. TIME: 
-25.01.2014 19:56:58
-URL: http://localhost/test.html
-Time added: 10.10.46038 15:40:42
-Last used: 10.10.46038 15:40:42
+26.01.2014 12:04:42
+URL: http://localhost/ind.html
+Time added: 26.01.2014 12:04:42
+Last used: 26.01.2014 12:04:42
 Total time in storage: 0
 Number of uses: 1Item added. TIME: 
-25.01.2014 19:57:39
-URL: http://www.yahoo.com
-Time added: 11.10.46038 02:01:31
-Last used: 11.10.46038 02:01:31
-Total time in storage: 3
-Number of uses: 1Item removed. TIME: 
-25.01.2014 19:58:00
+26.01.2014 12:05:34
 URL: http://localhost/index.html
-Time added: 10.10.46038 14:05:38
-Last used: 10.10.46038 22:21:50
+Time added: 26.01.2014 12:04:26
+Last used: 26.01.2014 12:04:54
 Total time in storage: 67
-Number of uses: 2Item added. TIME: 
-25.01.2014 19:58:00
-URL: http://www.yahoo.com
-Time added: 11.10.46038 02:01:31
-Last used: 11.10.46038 02:01:31
-Total time in storage: 24
-Number of uses: 1Item removed. TIME: 
-25.01.2014 19:58:20
-URL: http://localhost/test.html
-Time added: 10.10.46038 15:40:42
-Last used: 10.10.46038 15:40:42
-Total time in storage: 81
-Number of uses: 1Item added. TIME: 
-25.01.2014 19:58:20
-URL: http://www.yahoo.com
-Time added: 11.10.46038 02:01:31
-Last used: 11.10.46038 02:01:31
-Total time in storage: 44
-Number of uses: 1Item removed. TIME: 
-25.01.2014 19:58:31
-URL: http://www.yahoo.com
-Time added: 11.10.46038 02:01:31
-Last used: 11.10.46038 02:01:31
-Total time in storage: 55
-Number of uses: 1Item added. TIME: 
-25.01.2014 19:58:31
-URL: http://www.fool.com/investing/general/2014/01/25/an-ipad-blowout-may-be-on-the-way.aspx?source=eogyholnk0000001
-Time added: 11.10.46038 17:07:15
-Last used: 11.10.46038 17:07:15
-Total time in storage: 0
-Number of uses: 1Item removed. TIME: 
-25.01.2014 19:58:52
-URL: http://www.fool.com/investing/general/2014/01/25/an-ipad-blowout-may-be-on-the-way.aspx?source=eogyholnk0000001
-Time added: 11.10.46038 17:07:15
-Last used: 11.10.46038 17:07:15
-Total time in storage: 21
-Number of uses: 1Item added. TIME: 
-25.01.2014 19:58:52
-URL: http://www.fool.com/investing/general/2014/01/25/an-ipad-blowout-may-be-on-the-way.aspx?source=eogyholnk0000001
-Time added: 11.10.46038 17:07:15
-Last used: 11.10.46038 17:07:15
-Total time in storage: 21
-Number of uses: 1Item removed. TIME: 
-25.01.2014 19:59:12
-URL: http://www.fool.com/investing/general/2014/01/25/an-ipad-blowout-may-be-on-the-way.aspx?source=eogyholnk0000001
-Time added: 11.10.46038 17:07:15
-Last used: 11.10.46038 17:07:15
-Total time in storage: 41
-Number of uses: 1Item added. TIME: 
-25.01.2014 19:59:12
-URL: http://www.fool.com/investing/general/2014/01/25/an-ipad-blowout-may-be-on-the-way.aspx?source=eogyholnk0000001
-Time added: 11.10.46038 17:07:15
-Last used: 11.10.46038 17:07:15
-Total time in storage: 41
-Number of uses: 1Item added. TIME: 
-25.01.2014 19:59:33
+Number of uses: 2Item removed. TIME: 
+26.01.2014 12:05:42
 URL: http://localhost/index.html
-Time added: 12.10.46038 10:42:49
-Last used: 12.10.46038 10:42:49
+Time added: 26.01.2014 12:04:26
+Last used: 26.01.2014 12:04:54
+Total time in storage: 75
+Number of uses: 2Item removed. TIME: 
+26.01.2014 12:05:42
+URL: http://localhost/ind.html
+Time added: 26.01.2014 12:04:42
+Last used: 26.01.2014 12:04:42
+Total time in storage: 59
+Number of uses: 1Item added. TIME: 
+26.01.2014 12:05:42
+URL: http://localhost/ind2.php
+Time added: 26.01.2014 12:05:41
+Last used: 26.01.2014 12:05:41
+Total time in storage: 1
+Number of uses: 1Item added. TIME: 
+26.01.2014 12:07:21
+URL: http://localhost/index.html
+Time added: 26.01.2014 12:07:21
+Last used: 26.01.2014 12:07:21
 Total time in storage: 0
 Number of uses: 1Item removed. TIME: 
-25.01.2014 19:59:45
-URL: http://www.fool.com/investing/general/2014/01/25/an-ipad-blowout-may-be-on-the-way.aspx?source=eogyholnk0000001
-Time added: 11.10.46038 17:07:15
-Last used: 11.10.46038 17:07:15
-Total time in storage: 75
-Number of uses: 1Item added. TIME: 
-25.01.2014 19:59:45
-URL: http://localhost/test.html
-Time added: 12.10.46038 13:57:36
-Last used: 12.10.46038 13:57:36
-Total time in storage: 0
+26.01.2014 12:07:39
+URL: http://localhost/ind2.php
+Time added: 26.01.2014 12:05:41
+Last used: 26.01.2014 12:05:41
+Total time in storage: 117
+Number of uses: 1Item removed. TIME: 
+26.01.2014 12:07:39
+URL: http://localhost/index.html
+Time added: 26.01.2014 12:07:21
+Last used: 26.01.2014 12:07:21
+Total time in storage: 17
 Number of uses: 1

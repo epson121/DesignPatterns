@@ -82,7 +82,7 @@ public class Log {
     public void logOnItemChanged(LinkDocument document, String action) {
         Date dateAdded = new Date(document.getTimeOfStoring());
         Date dateLastUsed = new Date(document.getLastTimeUsed());
-        String record = "Item " + action + ". TIME: \n" + df.format(new Date()) + "\n" +
+        String record = "\n\n\nItem " + action + ". TIME: \n" + df.format(new Date()) + "\n" +
                         "URL: " + document.getUrl() + "\n" +
                         "Time added: " + df.format(dateAdded) + "\n" +
                         "Last used: " + df.format(dateLastUsed) + "\n" +

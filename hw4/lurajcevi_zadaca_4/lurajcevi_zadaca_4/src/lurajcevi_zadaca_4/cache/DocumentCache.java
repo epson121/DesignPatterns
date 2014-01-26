@@ -113,13 +113,18 @@ public class DocumentCache implements Cache {
     public void addToStorage(LinkDocument linkDocument, Document doc) {
         // If storage is full, remove element
         if (this.capacityType != null) {
-            if (DocumentSerialization.getStorageSize() >= this.capacity) {
+            double size = doc.html().getBytes().length/1024;
+            while (DocumentSerialization.getStorageSize() + size > this.capacity) {
+                if (DocumentSerialization.record.isEmpty()) {
+                    System.out.println("FILE IS TOO BIG TO CACHE.");
+                    return;
+                }
                 release(strategy.getForRemoval());
             }
         } else if (DocumentSerialization.record.size() >= this.capacity){
             release(strategy.getForRemoval());
         }
-
+        
         // add the new one after the removal
         int id = getId(linkDocument.getUrl());
         if (id == -1) {
