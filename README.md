@@ -19,7 +19,7 @@ Homework 2:
 Homework 3:
 *  Url content control
   * Load a web page and reload in interval
-  * Parse it and get all <a> tags and their href attributes
+  * Parse it and get all <a></a> tags and their href attributes
   * Jump from one page to another
   * Save states and keep track of the statistics
   * Design patterns used: MVC, Memento, Chain of responsibility
@@ -27,7 +27,7 @@ Homework 3:
 Homework 4:
 *  Url content control II
   * Load a web page and reload in interval (load from web or from cache)
-  * Parse it and get all <a> tags and their href attributes
+  * Parse it and get all <a></a> tags and their href attributes
   * Jump from one page to another
   * Save pages in cache and keep track of the statistics
   * Persist the statistics for multiple usage
